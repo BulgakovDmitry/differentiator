@@ -1,0 +1,23 @@
+digraph
+{
+    node [ style = filled, fontcolor=darkblue, fillcolor=peachpuff, color="#252A34", penwidth = 2.5 ];
+    bgcolor = "lemonchiffon";
+
+    node_0000026406a91710 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";  label=" {OPERATION ( + ) | addr: 26406A91710 | type: 3 | value: 1 | {left: 26406A91950 | right: 26406A917A0}} "];
+    node_0000026406a91950 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";  label=" {OPERATION ( + ) | addr: 26406A91950 | type: 3 | value: 1 | {left: 26406A916E0 | right: 26406A91770}} "];
+    node_0000026406a916e0 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";  label=" {OPERATION ( * ) | addr: 26406A916E0 | type: 3 | value: 3 | {left: 26406A91A10 | right: 26406A91830}} "];
+    node_0000026406a91a10 [shape=Mrecord; style = filled; fillcolor = palegreen; color = "#000000"; fontcolor = "#000000";  label=" {NUMBER ( 0 )| addr: 26406A91A10 | type: 1| value: 0 | {left: 0 | right: 0}} "];
+    node_0000026406a91830 [shape=Mrecord; style = filled; fillcolor = cornflowerblue; color = "#000000"; fontcolor = "#000000";  label=" {VARIABLE ( x )| addr: 26406A91830 | type: 2| value: 120 | {left: 0 | right: 0}} "];
+    node_0000026406a91770 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";  label=" {OPERATION ( * ) | addr: 26406A91770 | type: 3 | value: 3 | {left: 26406A918F0 | right: 26406A918C0}} "];
+    node_0000026406a918f0 [shape=Mrecord; style = filled; fillcolor = palegreen; color = "#000000"; fontcolor = "#000000";  label=" {NUMBER ( 6 )| addr: 26406A918F0 | type: 1| value: 6 | {left: 0 | right: 0}} "];
+    node_0000026406a918c0 [shape=Mrecord; style = filled; fillcolor = palegreen; color = "#000000"; fontcolor = "#000000";  label=" {NUMBER ( 1 )| addr: 26406A918C0 | type: 1| value: 1 | {left: 0 | right: 0}} "];
+    node_0000026406a917a0 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";  label=" {OPERATION ( * ) | addr: 26406A917A0 | type: 3 | value: 3 | {left: 26406A919E0 | right: 26406A91510}} "];
+    node_0000026406a919e0 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";  label=" {OPERATION ( / ) | addr: 26406A919E0 | type: 3 | value: 4 | {left: 26406A91A40 | right: 26406A91920}} "];
+    node_0000026406a91a40 [shape=Mrecord; style = filled; fillcolor = palegreen; color = "#000000"; fontcolor = "#000000";  label=" {NUMBER ( 1 )| addr: 26406A91A40 | type: 1| value: 1 | {left: 0 | right: 0}} "];
+    node_0000026406a91920 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";  label=" {OPERATION ( * ) | addr: 26406A91920 | type: 3 | value: 3 | {left: 26406A91600 | right: 26406A915D0}} "];
+    node_0000026406a91600 [shape=Mrecord; style = filled; fillcolor = cornflowerblue; color = "#000000"; fontcolor = "#000000";  label=" {VARIABLE ( x )| addr: 26406A91600 | type: 2| value: 120 | {left: 0 | right: 0}} "];
+    node_0000026406a915d0 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";  label=" {OPERATION ( ln ) | addr: 26406A915D0 | type: 3 | value: 8 | {left: 0 | right: 26406A91570}} "];
+    node_0000026406a91570 [shape=Mrecord; style = filled; fillcolor = palegreen; color = "#000000"; fontcolor = "#000000";  label=" {NUMBER ( 7 )| addr: 26406A91570 | type: 1| value: 7 | {left: 0 | right: 0}} "];
+    node_0000026406a91510 [shape=Mrecord; style = filled; fillcolor = palegreen; color = "#000000"; fontcolor = "#000000";  label=" {NUMBER ( 1 )| addr: 26406A91510 | type: 1| value: 1 | {left: 0 | right: 0}} "];
+    node_0000026406a91710 -> node_0000026406a91950     node_0000026406a91950 -> node_0000026406a916e0     node_0000026406a916e0 -> node_0000026406a91a10     node_0000026406a916e0 -> node_0000026406a91830    node_0000026406a91950 -> node_0000026406a91770    node_0000026406a91770 -> node_0000026406a918f0     node_0000026406a91770 -> node_0000026406a918c0    node_0000026406a91710 -> node_0000026406a917a0    node_0000026406a917a0 -> node_0000026406a919e0     node_0000026406a919e0 -> node_0000026406a91a40     node_0000026406a919e0 -> node_0000026406a91920    node_0000026406a91920 -> node_0000026406a91600     node_0000026406a91920 -> node_0000026406a915d0    node_0000026406a915d0 -> node_0000026406a91570    node_0000026406a917a0 -> node_0000026406a91510
+}

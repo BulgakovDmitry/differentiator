@@ -1,0 +1,1 @@
+pdflatex -output-directory=dumpLatex dumpLatex\\dumpTex.tex
