@@ -1,0 +1,12 @@
+Evgeny\ Onegin
+musor
+*.exe
+*.o 
+*.tex
+*.txt
+.vscode
+.dist
+*.gv
+*.png
+dumpLatex
+
