@@ -124,47 +124,58 @@ void dumpListNodes(Node* node, FILE* dumpTreeFile)
         {
             case OPERATION_ADD:
             {
-                CASE_OPERATION("+");     
+                caseOperation(node, "+", dumpTreeFile);
+                break;     
             }
             case OPERATION_SUB:
             {
-                CASE_OPERATION("-")                        
+                caseOperation(node, "-", dumpTreeFile);
+                break;                   
             }
             case OPERATION_MUL:
             {
-                CASE_OPERATION("*")                         
+                caseOperation(node, "*", dumpTreeFile);
+                break;                          
             }
             case OPERATION_DIV:
             {
-                CASE_OPERATION("/");
+                caseOperation(node, "/", dumpTreeFile);
+                break;    
             }
             case OPERATION_POW:
             {
-                CASE_OPERATION("^");
+                caseOperation(node, "^", dumpTreeFile);
+                break;    
             }
             case OPERATION_LOG:
             {
-                CASE_OPERATION("log");
+                caseOperation(node, "log", dumpTreeFile);
+                break;    
             }
             case OPERATION_ROOT:
             {
-                CASE_OPERATION("root");
+                caseOperation(node, "root", dumpTreeFile);
+                break;    
             }
             case OPERATION_SIN:
             {
-                CASE_OPERATION("sin");
+                caseOperation(node, "sin", dumpTreeFile);
+                break;    
             }
             case OPERATION_COS:
             {
-                CASE_OPERATION("cos");
+                caseOperation(node, "cos", dumpTreeFile);
+                break;    
             }
             case OPERATION_LN:
             {
-                CASE_OPERATION("ln");
+                caseOperation(node, "ln", dumpTreeFile);
+                break;    
             }
             case OPERATION_SQRT:
             {
-                CASE_OPERATION("sqrt");
+                caseOperation(node, "sqrt", dumpTreeFile);
+                break;    
             }
             default:
             {
@@ -176,6 +187,32 @@ void dumpListNodes(Node* node, FILE* dumpTreeFile)
     
     if (node->left)  dumpListNodes(node->left, dumpTreeFile);
     if (node->right) dumpListNodes(node->right, dumpTreeFile);
+}
+
+void dumpTex(Node* root)
+{
+    assert(root);
+    FILE* dumpTexFile = fopen(DUMPTEX_FILE_NAME, "w");
+    printHeadTex(dumpTexFile);
+    
+    fprintf(dumpTexFile, "$f=qwerty$\n");
+
+    printfEndTex(dumpTexFile);
+}
+
+void printHeadTex(FILE* file)
+{
+    assert(file);
+    fprintf(file, "\\documentclass[a4paper,12pt]{article}\n" 
+                  "\\begin{document}\n");
+}
+
+void printfEndTex(FILE* file)
+{
+    assert(file);
+    fprintf(file, "\\end{document}\n");
+    FCLOSE(file);
+    system("pdflatex -output-directory=dumpLatex dumpTex.tex");
 }
 
 void print(Node* node)
@@ -192,47 +229,58 @@ void print(Node* node)
         {
             case OPERATION_ADD:
             {
-                CASE_PRINT_OPERATION("+");
+                casePrintOperation(node, "+");
+                break;
             }
             case OPERATION_SUB:
             {
-                CASE_PRINT_OPERATION("-");
+                casePrintOperation(node, "-");
+                break;
             }
             case OPERATION_MUL:
             {
-                CASE_PRINT_OPERATION("*");
+                casePrintOperation(node, "*");
+                break;
             }
             case OPERATION_DIV:
             {
-                CASE_PRINT_OPERATION("/");
+                casePrintOperation(node, "/");
+                break;
             }
             case OPERATION_POW:
             {
-                CASE_PRINT_OPERATION("^");
+                casePrintOperation(node, "^");
+                break;
             }
             case OPERATION_LOG:
             {
-                CASE_PRINT_OPERATION("log");
+                casePrintOperation(node, "log");
+                break;
             }
             case OPERATION_ROOT:
             {
-                CASE_PRINT_OPERATION("root");
+                casePrintOperation(node, "root");
+                break;
             }
             case OPERATION_SIN:
             {
-                CASE_PRINT_OPERATION("sin");
+                casePrintOperation(node, "sin");
+                break;
             }
             case OPERATION_COS:
             {
-                CASE_PRINT_OPERATION("cos");
+                casePrintOperation(node, "cos");
+                break;
             }
             case OPERATION_LN:
             {
-                CASE_PRINT_OPERATION("ln");
+                casePrintOperation(node, "ln");
+                break;
             }
             case OPERATION_SQRT:
             {
-                CASE_PRINT_OPERATION("sqrt");
+                casePrintOperation(node, "sqrt");
+                break;
             }
             default:
             {
@@ -258,4 +306,23 @@ Node* copy(Node* node)
     if(!node) return NULL;
     Node* n = newNode(node->type, node->value, copy(node->left), copy(node->right));
     return n;
+}
+
+void caseOperation(Node* node, const char* operation, FILE* dumpTreeFile)
+{
+    assert(node);
+    assert(operation);
+    assert(dumpTreeFile);
+
+    fprintf(dumpTreeFile, "node_%p [shape=Mrecord; style = filled; fillcolor=plum; color = \"#000000\"; fontcolor = \"#000000\";"
+                          "label=\" {OPERATION ( %s ) | addr: %llX | type: %d | value: %lg | {left: %llX | right: %llX}} \"];\n", 
+                                node, operation, (size_t)node, node->type, node->value, (size_t)node->left, (size_t)node->right
+           );                                                                                                          
+}
+
+void casePrintOperation(Node* node, const char* operation)
+{
+    assert(node);
+    assert(operation);
+    printf(MANG "%s" RESET, operation);
 }

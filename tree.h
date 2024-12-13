@@ -2,9 +2,8 @@
 #define TREE_H
 
 #include <assert.h>
-#include <stdbool.h>
 #include <stdlib.h>
-#include "myLib.h"
+#include <myLib.h>
 
 typedef double value_t;
 
@@ -38,17 +37,10 @@ enum Operations
 
 const double PI = 3.1415;
 const double E  = 2.7183;
+const char* const DUMPTEX_FILE_NAME = "dumpTex.tex";
 
-#define CASE_OPERATION(op_) \
-    fprintf(dumpTreeFile, "    node_%p [shape=Mrecord; style = filled; fillcolor=plum; color = \"#000000\"; fontcolor = \"#000000\";  label=\" {OPERATION ( %s ) | addr: %llX | type: %d | value: %lg | {left: %llX | right: %llX}} \"];\n", \
-                                    node, (char*)op_, (size_t)node, node->type, node->value, (size_t)node->left, (size_t)node->right);                                                                                                          \
-    break;
+// TODO union value_t
 
-#define CASE_PRINT_OPERATION(op_)        \
-    printf(MANG "%s" RESET, (char*)op_); \
-    break;
-
-//if (node->value == OPERATION_ADD)  printf("%s + %s", MANG, RESET);
 struct Node
 {
     Types type;
@@ -62,12 +54,19 @@ Node* copy(Node* node);
 void dtorTree(Node* node);    
 void deleteNode(Node* node);  
 
-void dumpGraph(Node* node);                                //
-void dumpListNodes(Node* node, FILE* dumpTreeFile);        // Графический dump
-void dumpConnectNodes(Node* node, FILE* dumpTreeFile);     // 
+void dumpGraph(Node* node);                                                  //
+void dumpListNodes(Node* node, FILE* dumpTreeFile);                          // Графический dump
+void dumpConnectNodes(Node* node, FILE* dumpTreeFile);                       // 
+void caseOperation(Node* node, const char* operation, FILE* dumpTreeFile);   //
 
-void dumpPrint(Node* node);       // Консольный
-void print(Node* node);           // dump
+void dumpPrint(Node* node);                                 // Консольный
+void print(Node* node);                                     // dump
+void casePrintOperation(Node* node, const char* operation); // 
+
+void dumpTex(Node* root);       // Теховский dump
+void printHeadTex(FILE* file);  //
+void printfEndTex(FILE* file);  //
+
 
 
 #endif

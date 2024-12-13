@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "myLib.h"
+#include <myLib.h>
 #include "tree.h"
 #include "DSL.h"
 #include "simplify.h"
@@ -8,23 +8,22 @@
 
 int main()
 {
-    Node* root = _ADD(_MUL(_NUM(6), _VAR('x')), _LOG(_NUM(7), _VAR('x')));
+    //Node* root = _POW(_VAR('j'), _NUM(0.5));
+    //Node* root = _SIN(_VAR('j'));
+
     //Node* root = _POW(_POW(_POW(_POW(_POW(_VAR('q'), _VAR('q')), _VAR('q')), _VAR('q')), _VAR('q')), _VAR('q'));
 
-    //Node* root = Read();
+    Node* root = read();
     
     root = diff(root);
 
+    simplify(root);  // УПРАЩЕНИЕ ДЕРЕВА
+    
     dumpGraph(root); // ГРАФИЧЕСКИЙ dump
     dumpPrint(root); // КОНСОЛЬНЫЙ  dump
+    dumpTex  (root); // ТЕХОВСКИЙ   dump
 
     dtorTree(root);
     SUCCESS;
     return 0;
 }
-
-// УБРАЛ ENUM VARIABLES
-// СДЕЛАЛ РЕК ЧИТАЛКУ
-// СДЕЛАЛ ДОФИГА МАКРОСОВ
-// НАУЧИЛ ДИФФЕРЕНЦИРОВАТЬ
-// ВВЁЛ ФУНКЦИИ

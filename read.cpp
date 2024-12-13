@@ -8,7 +8,15 @@
 #include "DSL.h"
 #include "read.h"
 
-Node* Read()
+static Node* Get(char* S);
+static Node* GetG(GetParam* gp); // Главная начальственная функция
+static Node* GetE(GetParam* gp); // функция для подсчёта сложения и вычитания
+static Node* GetT(GetParam* gp); // функция для подсчёта умножения и деления
+static Node* GetA(GetParam* gp); // функция для подсчёта степени
+static Node* GetP(GetParam* gp); // функция для приоритета скобок
+static Node* GetN(GetParam* gp); // функция для чтения числа или переменной
+
+Node* read()
 {
     const char* const FileName = "expression.txt";
     FILE* inputText = fopen(FileName, "r");
@@ -57,57 +65,57 @@ GetParam* GetCtor()
 {
     GetParam* gp = (GetParam*)calloc(1, sizeof(GetParam));
     assert(gp);
-    gp->p = 0;
-    gp->s = NULL;
+    gp->index = 0;
+    gp->arr = NULL;
     return gp;
 }
 
 void GetDtor(GetParam* gp)
 {
     assert(gp);
-    if (gp->s)
-        FREE(gp->s);
-    gp->p = 0;
+    if (gp->arr)
+        FREE(gp->arr);
+    gp->index = 0;
 }
 
-Node* Get(char* S)
+static Node* Get(char* S)
 {
     assert(S);
     GetParam* gp = GetCtor();
     assert(gp);
 
-    gp->s = S;
+    gp->arr = S;
     
     return GetG(gp);
 }
 
-Node* GetG(GetParam* gp)
+static Node* GetG(GetParam* gp)
 {
     assert(gp);
     Node* val = GetE(gp);
 
-    if(gp->s[gp->p] != '$')
+    if(gp->arr[gp->index] != '$')
     {
         printf("Syntax Error\n");
 
         return NULL;
     }
-    gp->p++;
+    gp->index++;
     
     GetDtor(gp);
     return val;
 }
 
-Node* GetE(GetParam* gp)
+static Node* GetE(GetParam* gp)
 {
     assert(gp);
 
     Node* val = GetT(gp);
 
-    while(gp->s[gp->p] == '+' || gp->s[gp->p] == '-')
+    while(gp->arr[gp->index] == '+' || gp->arr[gp->index] == '-')
     {
-        int op = gp->s[gp->p];
-        gp->p++;
+        int op = gp->arr[gp->index];
+        gp->index++;
         Node* val2 = GetT(gp);
         if(op == '+')
         {
@@ -122,16 +130,16 @@ Node* GetE(GetParam* gp)
     return val;
 }
 
-Node* GetT(GetParam* gp)
+static Node* GetT(GetParam* gp)
 {
     assert(gp);
 
     Node* val = GetA(gp);
 
-    while(gp->s[gp->p] == '*' || gp->s[gp->p] == '/')
+    while(gp->arr[gp->index] == '*' || gp->arr[gp->index] == '/')
     {
-        int op = gp->s[gp->p];
-        gp->p++;
+        int op = gp->arr[gp->index];
+        gp->index++;
         Node* val2 = GetA(gp);
         if(op == '*')
         {
@@ -140,21 +148,20 @@ Node* GetT(GetParam* gp)
         else 
         {
             val = _DIV(val, val2);    
-
         }
     }
 
     return val;
 }
 
-Node* GetA(GetParam* gp) // TODO: static
+static Node* GetA(GetParam* gp)
 {
     assert(gp);
     Node* val = GetP(gp);
 
-    while(gp->s[gp->p] == '^')
+    while(gp->arr[gp->index] == '^')
     {
-        gp->p++;
+        gp->index++;
         Node* val2 = GetP(gp);
         val = _POW(val, val2);
     }
@@ -162,22 +169,22 @@ Node* GetA(GetParam* gp) // TODO: static
     return val;
 }
 
-Node* GetP(GetParam* gp)
+static Node* GetP(GetParam* gp)
 {
     assert(gp);
 
-    if(gp->s[gp->p] == '(')
+    if(gp->arr[gp->index] == '(')
     {
-        gp->p++;
+        gp->index++;
         Node* val = GetE(gp);
 
     
-        if(gp->s[gp->p] != ')')
+        if(gp->arr[gp->index] != ')')
         {
             printf("problem with GetP\n");
             exit(0);
         }
-        gp->p++;
+        gp->index++;
         
         return val;
     }
@@ -190,22 +197,22 @@ Node* GetP(GetParam* gp)
 
 
 
-Node* GetN(GetParam* gp)
+static Node* GetN(GetParam* gp)
 {
     assert(gp);
 
     int val = 0;
-    int old_p = gp->p;
+    int old_p = gp->index;
 
-    if(gp->s[gp->p] <= '9'  && '0' <= gp->s[gp->p])
+    if(gp->arr[gp->index] <= '9'  && '0' <= gp->arr[gp->index])
     {
-        while ('0' <= gp->s[gp->p] && gp->s[gp->p] <= '9')
+        while ('0' <= gp->arr[gp->index] && gp->arr[gp->index] <= '9')
         {
-            val = val * 10 + gp->s[gp->p] - '0';
-            gp->p++;
+            val = val * 10 + gp->arr[gp->index] - '0';
+            gp->index++;
         }
 
-        if(gp->p == old_p)
+        if(gp->index == old_p)
         {
             printf("problem with GetN\n");
             exit(0);
@@ -213,10 +220,10 @@ Node* GetN(GetParam* gp)
 
         return _NUM(val);
     }
-    else if(isalpha(gp->s[gp->p]) != 0)
+    else if(isalpha(gp->arr[gp->index]) != 0)
     {
-        gp->p++;
-        return _VAR((int)gp->s[gp->p - STEP_P]);
+        gp->index++;
+        return _VAR((int)gp->arr[gp->index - STEP_P]);
     }
     else
     {

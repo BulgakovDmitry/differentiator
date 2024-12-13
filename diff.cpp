@@ -6,7 +6,7 @@ Node* diff(Node* node)
     if (!node)
     {
         printf(RED "ERROR IN FUNCTION diff, diff get the null node\n" RESET);
-        assert(false);
+        abort();
     }
 
     if (node->type == TYPE_NUMBER) 
@@ -53,7 +53,7 @@ Node* diff(Node* node)
             }
             case OPERATION_POW:
             {
-                return  _MUL(copy(node), diff(_MUL(_LN(copy(node->left)), copy(node->right))));
+                return diffPow(node);
             }
             default:
                 printf(RED "SINTAX ERRROR IN FUNCTION DIFF\n" RESET);
@@ -68,3 +68,24 @@ Node* diff(Node* node)
     return node; 
 }
 
+Node* diffPow(Node* node)
+{
+    assert(node);
+
+    PresenceOfVariable prV = checkOnPresenceOfVariableInThisSubTree(node);
+
+    if (prV == NO_VARIABLE)
+        return _NUM(0);
+    else
+    {
+        PresenceOfVariable prVleft  = checkOnPresenceOfVariableInThisSubTree(node->left);
+        PresenceOfVariable prVright = checkOnPresenceOfVariableInThisSubTree(node->right);
+        
+        if (prVleft == THERE_IS_A_VARIBLE && prVright == NO_VARIABLE)
+            return _MUL(_MUL(_POW(copy(node)->left, _SUB(copy(node)->right, _NUM(1))), copy(node)->right), diff(node->left));
+        if (prVleft == NO_VARIABLE && prVright == THERE_IS_A_VARIBLE)
+            return _MUL(_MUL(_POW(copy(node)->left, copy(node)->right), _LN(copy(node)->left)), diff(node->right));
+        else
+            return  _MUL(copy(node), diff(_MUL(_LN(copy(node->left)), copy(node->right))));
+    }
+}

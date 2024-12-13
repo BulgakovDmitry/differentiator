@@ -1,1 +1,1 @@
-g++ .\main.cpp .\tree.cpp .\simplify.cpp .\read.cpp .\diff.cpp .\myLib.cpp -Wall -Wextra -o diff.exe
+g++ .\main.cpp .\tree.cpp .\simplify.cpp .\read.cpp .\diff.cpp ./myLib/myLib.cpp -Wall -Wextra -I ./myLib -o diff.exe

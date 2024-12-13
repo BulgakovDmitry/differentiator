@@ -6,10 +6,22 @@ enum PresenceOfVariable
 {
     THERE_IS_A_VARIBLE = 1,
     NO_VARIABLE        = 2,
-    NO_VARIABLE_E = 3
+};
+
+enum Direction
+{
+    LEFT_DIRECTION,
+    RIGHT_DIRECTION,
+    PARENT_DIRECTION,
 };
 
 PresenceOfVariable checkOnPresenceOfVariableInThisSubTree(Node* node);
+
+int simplify(Node* root);
+int constantFolding(Node* node);
+int TrivialOperations(Node** node);
+
+
 
 
 

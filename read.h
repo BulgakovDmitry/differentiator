@@ -16,19 +16,11 @@ const int STEP_P        = 1;
 
 struct GetParam
 {
-    char* s;
-    int p;
+    char* arr;
+    int index;
 };
 
-Node* Read();
-Node* Get(char* S);
-Node* GetG(GetParam* gp); // Главная начальственная функция
-Node* GetE(GetParam* gp); // функция для подсчёта сложения и вычитания
-Node* GetT(GetParam* gp); // функция для подсчёта умножения и деления
-Node* GetA(GetParam* gp); // функция для подсчёта степени
-Node* GetP(GetParam* gp); // функция для приоритета скобок
-Node* GetN(GetParam* gp); // функция для чтения числа или переменной
-
+Node* read();
 GetParam* GetCtor();
 void GetDtor(GetParam* gp);
 
