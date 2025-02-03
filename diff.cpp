@@ -43,6 +43,10 @@ Node* diff(Node* node)
             {
                 return _MUL(_SUB(_NUM(0), _SIN(copy(node)->right)), diff(node->right));
             }
+            case OPERATION_TG:
+            {
+                return _MUL(_DIV(_NUM(1), _POW(_COS(copy(node)->right), _NUM(2))), diff(node->right));
+            }
             case OPERATION_LN:
             {
                 return _MUL(_DIV(_NUM(1), copy(node->right)), diff(node->right));

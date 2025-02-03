@@ -63,9 +63,11 @@ void dumpPrint(Node* node);                                 // Консольн�
 void print(Node* node);                                     // dump
 void casePrintOperation(Node* node, const char* operation); // 
 
-void dumpTex(Node* root);       // Теховский dump
-void printHeadTex(FILE* file);  //
-void printfEndTex(FILE* file);  //
+void dumpTex(Node* root);                  // Теховский dump
+void printHeadTex(FILE* file);             //
+void printfEndTex(FILE* file);             //
+void generateTex(Node* node, FILE* file);  //
+
 
 
 

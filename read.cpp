@@ -12,9 +12,12 @@ static Node* Get(char* S);
 static Node* GetG(GetParam* gp); // Главная начальственная функция
 static Node* GetE(GetParam* gp); // функция для подсчёта сложения и вычитания
 static Node* GetT(GetParam* gp); // функция для подсчёта умножения и деления
+static Node* GetPrime (GetParam* gp);
 static Node* GetA(GetParam* gp); // функция для подсчёта степени
 static Node* GetP(GetParam* gp); // функция для приоритета скобок
 static Node* GetN(GetParam* gp); // функция для чтения числа или переменной
+static Node* GetMathFunc (GetParam* gp);
+
 
 Node* read()
 {
@@ -97,11 +100,10 @@ static Node* GetG(GetParam* gp)
     if(gp->arr[gp->index] != '$')
     {
         printf("Syntax Error\n");
-
         return NULL;
     }
-    gp->index++;
-    
+    else
+        gp->index++;
     GetDtor(gp);
     return val;
 }
@@ -118,13 +120,9 @@ static Node* GetE(GetParam* gp)
         gp->index++;
         Node* val2 = GetT(gp);
         if(op == '+')
-        {
             val = _ADD(val, val2);
-        }
         else 
-        {
             val = _SUB(val, val2);
-        }
     }
 
     return val;
@@ -142,30 +140,11 @@ static Node* GetT(GetParam* gp)
         gp->index++;
         Node* val2 = GetA(gp);
         if(op == '*')
-        {
             val = _MUL(val, val2);
-        }
         else 
-        {
             val = _DIV(val, val2);    
-        }
     }
 
-    return val;
-}
-
-static Node* GetA(GetParam* gp)
-{
-    assert(gp);
-    Node* val = GetP(gp);
-
-    while(gp->arr[gp->index] == '^')
-    {
-        gp->index++;
-        Node* val2 = GetP(gp);
-        val = _POW(val, val2);
-    }
-    
     return val;
 }
 
@@ -177,7 +156,6 @@ static Node* GetP(GetParam* gp)
     {
         gp->index++;
         Node* val = GetE(gp);
-
     
         if(gp->arr[gp->index] != ')')
         {
@@ -189,13 +167,40 @@ static Node* GetP(GetParam* gp)
         return val;
     }
     else
-    {
+        //return GetPrime(gp);
         return GetN(gp);
-    }
-
 }
 
+static Node* GetPrime (GetParam* gp)
+{
+    Node* node_val = GetP(gp);
+    if (node_val)
+        return node_val;
 
+    else if (gp->arr[gp->index] == 'x')
+        return GetN(gp);
+
+    else node_val = GetMathFunc(gp);
+        if (node_val)
+            return node_val;      
+        else 
+            return GetN(gp);
+}
+
+static Node* GetA(GetParam* gp)
+{
+    assert(gp);
+    Node* val = GetPrime(gp);
+
+    while(gp->arr[gp->index] == '^')
+    {
+        gp->index++;
+        Node* val2 = GetP(gp);
+        val = _POW(val, val2);
+    }
+    
+    return val;
+}
 
 static Node* GetN(GetParam* gp)
 {
@@ -230,4 +235,46 @@ static Node* GetN(GetParam* gp)
         printf(RED "problem with GetN\n" RESET);
         exit(0);
     }
+}
+
+static Node* GetMathFunc (GetParam* gp)
+{
+//-------------- COS ---------------------------
+    if (gp->arr[gp->index] == 'c')  {
+    gp->index++;
+    Node* node = GetP(gp);
+    return _COS(node);           }
+//-------------- SIN ---------------------------
+    else if (gp->arr[gp->index] == 's') {
+    gp->index++;
+    Node* node = GetP(gp);
+    return _SIN(node);               }
+//-------------- LN ---------------------------
+    else if (gp->arr[gp->index] == 'l') {
+    gp->index++;
+    Node* node = GetP(gp);
+    return _LN(node);                }
+//-------------- LOG ---------------------------
+    else if (gp->arr[gp->index] == 'L') {
+    gp->index++;
+    Node* node1 = GetP(gp);
+        if (!node1) 
+        {
+            printf(RED "ERROR IN FUNCTION math\n" RESET);
+            abort();
+        }
+    Node* node2 = GetP(gp);
+        if (!node2) 
+        {
+            printf(RED "ERROR IN FUNCTION math\n" RESET);
+            abort();
+        }
+
+    return _LOG(node1, node2);       }
+
+    else if (gp->arr[gp->index] == 't') {
+    gp->index++;
+    Node* Node = GetP(gp);
+    return _TG(Node);               }
+    else return 0;
 }

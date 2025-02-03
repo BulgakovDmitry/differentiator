@@ -31,6 +31,9 @@
 #define _SIN(argument_) \
     newNode(TYPE_OPERATION, OPERATION_SIN, NULL, argument_)
 
+#define _TG(argument_) \
+    newNode(TYPE_OPERATION, OPERATION_TG, NULL, argument_)
+
 #define _LN(argument_) \
     newNode(TYPE_OPERATION, OPERATION_LN, NULL, argument_)
 

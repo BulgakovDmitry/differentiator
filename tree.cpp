@@ -167,6 +167,11 @@ void dumpListNodes(Node* node, FILE* dumpTreeFile)
                 caseOperation(node, "cos", dumpTreeFile);
                 break;    
             }
+            case OPERATION_TG:
+            {
+                caseOperation(node, "tg", dumpTreeFile);
+                break;    
+            }
             case OPERATION_LN:
             {
                 caseOperation(node, "ln", dumpTreeFile);
@@ -195,9 +200,126 @@ void dumpTex(Node* root)
     FILE* dumpTexFile = fopen(DUMPTEX_FILE_NAME, "w");
     printHeadTex(dumpTexFile);
     
-    fprintf(dumpTexFile, "$f=qwerty$\n");
+    fprintf(dumpTexFile, "\\[");
+    generateTex(root, dumpTexFile);
+    fprintf(dumpTexFile, "\\]");
 
     printfEndTex(dumpTexFile);
+}
+
+void generateTex(Node* node, FILE* file)
+{
+    assert(node);
+    assert(file);
+
+
+    switch ((int)node->type)
+    {
+        case TYPE_OPERATION:
+        {
+            switch ((int)node->value)
+            {
+                case OPERATION_ADD:
+                {
+                    fprintf(file, "(");
+                    generateTex(node->left, file);
+                    fprintf(file, " + ");
+                    generateTex(node->right, file);
+                    fprintf(file, ")");
+                    break;
+                }
+                case OPERATION_SUB:
+                {
+                    fprintf(file, "(");
+                    generateTex(node->left, file);
+                    fprintf(file, " - ");
+                    generateTex(node->right, file);
+                    fprintf(file, ")");
+                    break;
+                }
+                case OPERATION_MUL:
+                {
+                    fprintf(file, "(");
+                    generateTex(node->left, file);
+
+                    fprintf(file, " \\cdot ");
+
+                    generateTex(node->right, file);
+                    fprintf(file, ")");
+                    break;
+                }
+                case OPERATION_DIV:
+                {
+                    fprintf(file, "\\frac{");
+                    generateTex(node->left, file);
+                    fprintf(file, "}{");
+                    generateTex(node->right, file);
+                    fprintf(file, "}");
+                    break;
+                }
+                case OPERATION_LN:
+                {
+                    fprintf(file, "ln( ");
+                    generateTex(node->right, file);
+                    fprintf(file, ")");
+                    break;
+                }
+                case OPERATION_SIN:
+                {
+                    fprintf(file, "sin( ");
+                    generateTex(node->right, file);
+                    fprintf(file, ")");
+                    break;
+                }
+                case OPERATION_COS:
+                {
+                    fprintf(file, "cos( ");
+                    generateTex(node->right, file);
+                    fprintf(file, ")");
+                    break;
+                }
+                case OPERATION_TG:
+                {
+                    fprintf(file, "tg( ");
+                    generateTex(node->right, file);
+                    fprintf(file, ")");
+                    break;
+                }
+                case OPERATION_POW:
+                {
+                    fprintf(file, "(");
+                    generateTex(node->left, file);
+                    fprintf(file, ")");
+
+                    fprintf(file, "^{");
+                    generateTex(node->right, file);
+                    fprintf(file, "}");
+                    break;
+                }
+                default:
+                {
+                    printf(RED "ERROR IN FUNCTION generateTex (1)\n" RESET);\
+                    abort();
+                }
+            }
+            break;
+        }  
+        case TYPE_NUMBER:
+        {
+            fprintf(file, "%lg", node->value);
+            break;
+        } 
+        case TYPE_VARIABLE:
+        {
+            fprintf(file, "%c", (char)node->value);
+            break;
+        }
+        default: 
+        {
+            printf(RED "ERROR IN FUNCTION generateTex (2)\n" RESET);\
+            abort();
+        }
+    }
 }
 
 void printHeadTex(FILE* file)
@@ -270,6 +392,11 @@ void print(Node* node)
             case OPERATION_COS:
             {
                 casePrintOperation(node, "cos");
+                break;
+            }
+            case OPERATION_TG:
+            {
+                casePrintOperation(node, "tg");
                 break;
             }
             case OPERATION_LN:
