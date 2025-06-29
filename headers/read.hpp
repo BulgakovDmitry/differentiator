@@ -1,7 +1,7 @@
 #ifndef READ_H
 #define READ_H
 
-#include "tree.h"
+#include "tree.hpp"
 
 struct ReadStruct
 {
