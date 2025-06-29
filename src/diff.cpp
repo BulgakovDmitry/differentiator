@@ -1,5 +1,10 @@
+<<<<<<< HEAD:src/diff.cpp
 #include "../headers/diff.hpp"
 #include "../headers/DSL.hpp"
+=======
+#include "diff.h"
+#include "DSL.h"
+>>>>>>> bd16e690d2e5ded0d14e349537736a45217249a6:diff.cpp
 
 Node* diff(Node* node)
 {

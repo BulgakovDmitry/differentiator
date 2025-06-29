@@ -3,7 +3,11 @@
 
 #include <assert.h>
 #include <stdlib.h>
+<<<<<<< HEAD:headers/tree.hpp
 #include <myLib.hpp>
+=======
+#include <myLib.h>
+>>>>>>> bd16e690d2e5ded0d14e349537736a45217249a6:tree.h
 
 typedef double value_t;
 

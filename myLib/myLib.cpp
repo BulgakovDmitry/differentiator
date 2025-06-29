@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include "myLib.hpp"
 
 size_t getFileSize(FILE* file)
@@ -24,3 +25,19 @@ char* readFileToBuffer(FILE* file, size_t size_file)
 
     return buffer;
 }
+=======
+#include "myLib.h"
+
+size_t getSizeOfFile(FILE* file, const char* const nameFile)
+{
+    assert(file);
+    assert(nameFile);
+
+    struct stat st;     
+    stat(nameFile, &st);                                                                             
+    size_t size = st.st_size;
+    assert(size);
+
+    return size;
+}
+>>>>>>> bd16e690d2e5ded0d14e349537736a45217249a6

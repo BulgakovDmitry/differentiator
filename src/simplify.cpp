@@ -1,5 +1,10 @@
+<<<<<<< HEAD:src/simplify.cpp
 #include "../headers/simplify.hpp"
 #include "../headers/tree.hpp"
+=======
+#include "simplify.h"
+#include "tree.h"
+>>>>>>> bd16e690d2e5ded0d14e349537736a45217249a6:simplify.cpp
 // свёртка констант при выходе из дерева (прм подъёме)
 #define CHECKFLAG(flag_) \
     if (flag_ > 0) return THERE_IS_A_VARIBLE;
