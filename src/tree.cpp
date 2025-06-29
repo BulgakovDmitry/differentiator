@@ -2,18 +2,28 @@
 
 Node* newNode(Types type, value_t value, Node* left, Node* right)
 {
-    assert(type); 
-    if (type >= NUMBER_OF_TYPES) assert(false);
-    if (type == TYPE_OPERATION) 
+    Node* node = (Node*)calloc(1, sizeof(Node));
+    if (!node)
     {
-        if (value >= NUMBER_OF_OPERATION && value != OPERATION_NIL) 
-        assert(false);
+        fprintf(stderr, RED"ERROR: Calloc returned nullptr in newNode()\n"RESET);
+        return nullptr;
     }
 
-    Node* node = (Node*)calloc(1, sizeof(Node));
-    node->type = type;
+    if (type >= NUMBER_OF_TYPES) 
+    {
+        fprintf(stderr, RED"ERROR: type >= NUMBER_OF_TYPES\n"RESET);
+        return nullptr;
+    }
+
+    /*if (type == TYPE_OPERATION) 
+    {
+        if (value >= NUMBER_OF_OPERATION && value != OPERATION_NIL) 
+            assert(false);
+    }*/
+
+    node->type  = type;
     node->value = value;
-    node->left = left;
+    node->left  = left;
     node->right = right;
 
     return node;
@@ -56,7 +66,7 @@ void deleteNode(Node* node)
 void dumpGraph(Node* node)   
 {
     assert(node);
-    const char* dumpFileName = "dumpTree.gv";
+    const char* dumpFileName = "dump/dumpTree.gv";
     FILE* dumpTreeFile = fopen(dumpFileName, "wb");
     assert(dumpTreeFile);
 
@@ -71,7 +81,7 @@ void dumpGraph(Node* node)
     fprintf(dumpTreeFile, "\n}\n");
 
     FCLOSE(dumpTreeFile);
-    system("dot dumpTree.gv -Tpng -o graphTree.png");
+    system("dot dump/dumpTree.gv -Tpng -o dump/graphTree.png");
 }
 
 void dumpPrint(Node* node)

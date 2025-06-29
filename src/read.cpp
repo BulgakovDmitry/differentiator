@@ -76,9 +76,8 @@ GetParam* GetCtor()
 void GetDtor(GetParam* gp)
 {
     assert(gp);
-    if (gp->arr)
-        FREE(gp->arr);
     gp->index = 0;
+    FREE(gp);
 }
 
 static Node* Get(char* S)
