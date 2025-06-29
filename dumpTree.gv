@@ -1,0 +1,12 @@
+digraph
+{
+    node [ style = filled, fontcolor=darkblue, fillcolor=peachpuff, color="#252A34", penwidth = 2.5 ];
+    bgcolor = "lemonchiffon";
+
+node_0x604000000450 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";label=" {OPERATION ( * ) | addr: 604000000450 | type: 3 | value: 3 | {left: 604000000410 | right: 6040000000D0}} "];
+node_0x604000000410 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";label=" {OPERATION ( * ) | addr: 604000000410 | type: 3 | value: 3 | {left: 604000000350 | right: 604000000110}} "];
+    node_0x604000000350 [shape=Mrecord; style = filled; fillcolor = cornflowerblue; color = "#000000"; fontcolor = "#000000";  label=" {VARIABLE ( x )| addr: 604000000350 | type: 2| value: 120 | {left: 0 | right: 0}} "];
+    node_0x604000000110 [shape=Mrecord; style = filled; fillcolor = palegreen; color = "#000000"; fontcolor = "#000000";  label=" {NUMBER ( 2 )| addr: 604000000110 | type: 1| value: 2 | {left: 0 | right: 0}} "];
+    node_0x6040000000d0 [shape=Mrecord; style = filled; fillcolor = palegreen; color = "#000000"; fontcolor = "#000000";  label=" {NUMBER ( 1 )| addr: 6040000000D0 | type: 1| value: 1 | {left: 0 | right: 0}} "];
+    node_0x604000000450 -> node_0x604000000410     node_0x604000000410 -> node_0x604000000350     node_0x604000000410 -> node_0x604000000110    node_0x604000000450 -> node_0x6040000000d0
+}

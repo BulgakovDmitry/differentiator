@@ -1,10 +1,10 @@
 #include <stdio.h>
-#include <myLib.h>
-#include "tree.h"
-#include "DSL.h"
-#include "simplify.h"
-#include "read.h"
-#include "diff.h"
+#include <myLib.hpp>
+#include "../headers/tree.hpp"
+#include "../headers/DSL.hpp"
+#include "../headers/simplify.hpp"
+#include "../headers/read.hpp"
+#include "../headers/diff.hpp"
 
 int main()
 {
@@ -16,13 +16,13 @@ int main()
     //Node* root = _MUL(_POW(_NUM(3.1415), _NUM(2)), _POW(_NUM(2.71), _VAR('x')));
     Node* root = read();
     
-    root = diff(root);
+    //root = diff(root);
 
-    simplify(root);  // УПРАЩЕНИЕ ДЕРЕВА
+    //simplify(root);  // УПРАЩЕНИЕ ДЕРЕВА
     
-    dumpGraph(root); // ГРАФИЧЕСКИЙ dump
-    dumpPrint(root); // КОНСОЛЬНЫЙ  dump
-    dumpTex  (root); // ТЕХОВСКИЙ   dump
+    //dumpGraph(root); // ГРАФИЧЕСКИЙ dump
+    //dumpPrint(root); // КОНСОЛЬНЫЙ  dump
+    //dumpTex  (root); // ТЕХОВСКИЙ   dump
 
     dtorTree(root);
     SUCCESS;

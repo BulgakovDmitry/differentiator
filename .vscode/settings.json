@@ -1,0 +1,13 @@
+{
+    "C_Cpp.default.includePath": [
+        "C:\\Users\\Пользователь\\gcc\\include\\c++\\14.1.0"
+    ],
+    "files.associations": {
+        "format": "cpp",
+        "initializer_list": "cpp",
+        "vector": "cpp",
+        "xstring": "cpp",
+        "xtree": "cpp",
+        "xutility": "cpp"
+    }
+}
