@@ -5,7 +5,12 @@
 #include <stdlib.h>
 #include <myLib.hpp>
 
-typedef double value_t;
+union Value_t
+{
+    double num;
+    int op;
+    char var;
+};
 
 enum Types
 {
@@ -23,7 +28,7 @@ enum Operations
     OPERATION_SUB  = 2,
     OPERATION_MUL  = 3,
     OPERATION_DIV  = 4, 
-    OPERATION_POW  = 5, //
+    OPERATION_POW  = 5, 
     OPERATION_ROOT = 6, 
     OPERATION_LOG  = 7,
     OPERATION_LN   = 8,
@@ -32,6 +37,7 @@ enum Operations
     OPERATION_TG   = 11,
     OPERATION_SQRT = 12,
     OPERATION_QBRT = 13,
+    OPERATION_NEG  = 14,
     NUMBER_OF_OPERATION,
 };
 
@@ -39,25 +45,18 @@ const double PI = 3.1415;
 const double E  = 2.7183;
 const char* const DUMPTEX_FILE_NAME = "dumpTex.tex";
 
-// TODO union value_t
-
 struct Node
 {
     Types type;
-    value_t value;
+    Value_t value;
     Node* right, *left, *parent;
 };
 
-Node* newNode(Types type, value_t value, Node* left, Node* right);
+Node* newNode(Types type, Value_t value, Node* left, Node* right);
 Node* copy(Node* node);
 
 void dtorTree(Node* node);    
 void deleteNode(Node* node);  
-
-void dumpGraph(Node* node);                                                  //
-void dumpListNodes(Node* node, FILE* dumpTreeFile);                          // Графический dump
-void dumpConnectNodes(Node* node, FILE* dumpTreeFile);                       // 
-void caseOperation(Node* node, const char* operation, FILE* dumpTreeFile);   //
 
 void dumpPrint(Node* node);                                 // Консольный
 void print(Node* node);                                     // dump

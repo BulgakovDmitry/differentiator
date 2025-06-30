@@ -1,0 +1,10 @@
+digraph G {
+    node [style=filled, fontcolor=darkblue, fillcolor=peachpuff, color="#252A34", penwidth=2.5];
+    bgcolor="lemonchiffon";
+
+node_0x604000000090 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";label=" {OPERATION ( + ) | addr: 604000000090 | type: 3 | value: 0 | {left: 1 | right: 604000000050}} "];
+    node_0x604000000050 [shape=Mrecord; style = filled; fillcolor = cornflowerblue; color = "#000000"; fontcolor = "#000000";  label="  {VARIABLE ( x )| addr: 604000000050 | type: 2| value: 0 | {left: 78 | right: 0}} "];
+    node_0x604000000010 [shape=Mrecord; style = filled; fillcolor = palegreen; color = "#000000"; fontcolor = "#000000";  label="  {NUMBER ( 1 )| addr: 604000000010 | type: 1| value: 1 | {left: 0 | right: 0}} "];
+    node_0x604000000090 -> node_0x604000000050;
+    node_0x604000000090 -> node_0x604000000010;
+}

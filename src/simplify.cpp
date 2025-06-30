@@ -11,12 +11,12 @@
         CHECKFLAG(flag);                                          \
     }                                                             \
 
-#define REPLACE(op_enum, sign)                                          \
+#define REPLACE(op_enum, sign)                                                     \
 op_enum:                                                                \
             {                                                           \
                 node->type = TYPE_NUMBER;                               \
-                                                                        \
-                node->value = node->left->value sign node->right->value;\
+                                                                                    \
+                node->value.num = node->left->value.num sign node->right->value.num;\
                                                                         \
                 FREE(node->left);                                       \
                 FREE(node->right);                                      \
@@ -29,8 +29,25 @@ op_enum:                                                                \
                 break;                                                  \
             }
 
+bool containsVariable(Node* node) 
+{
+    if (!node) 
+        return false;
 
+    if (node->type == TYPE_VARIABLE) 
+        return true;
 
+    if (node->type == TYPE_OPERATION) 
+    {
+        if (node->left && containsVariable(node->left)) 
+            return true;
+
+        if (node->right && containsVariable(node->right)) 
+            return true;
+    }
+    return false;
+}
+/*
 PresenceOfVariable checkOnPresenceOfVariableInThisSubTree(Node* node) 
 {
     assert(node);
@@ -48,7 +65,7 @@ PresenceOfVariable checkOnPresenceOfVariableInThisSubTree(Node* node)
     }
 }
 
-value_t calculateSubTree(Node* node, const value_t variable)
+Value_t calculateSubTree(Node* node, const Value_t variable)
 {
     if (!node)
     {
@@ -68,7 +85,7 @@ value_t calculateSubTree(Node* node, const value_t variable)
         }
         case TYPE_OPERATION:
         {
-            switch ((int)node->value)
+            switch ((int)node->value.op)
             {
                 case OPERATION_ADD:
                 {
@@ -346,4 +363,4 @@ int TrivialOperations(Node** node)
     }
 
     return val;
-}
+}*/

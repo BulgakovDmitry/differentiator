@@ -60,8 +60,6 @@ Node* read()
 
     FREE(buffer);
     return Get(text);
-
-    return 0;
 }
 
 GetParam* GetCtor()
@@ -205,7 +203,7 @@ static Node* GetN(GetParam* gp)
 {
     assert(gp);
 
-    int val = 0;
+    double val = 0;
     int old_p = gp->index;
 
     if(gp->arr[gp->index] <= '9'  && '0' <= gp->arr[gp->index])
@@ -227,7 +225,7 @@ static Node* GetN(GetParam* gp)
     else if(isalpha(gp->arr[gp->index]) != 0)
     {
         gp->index++;
-        return _VAR((int)gp->arr[gp->index - STEP_P]);
+        return _VAR((char)gp->arr[gp->index - STEP_P]);
     }
     else
     {

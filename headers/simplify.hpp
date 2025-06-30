@@ -16,6 +16,7 @@ enum Direction
 };
 
 PresenceOfVariable checkOnPresenceOfVariableInThisSubTree(Node* node);
+bool containsVariable(Node* node);
 
 int simplify(Node* root);
 int constantFolding(Node* node);
