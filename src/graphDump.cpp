@@ -2,8 +2,17 @@
 
 extern const char* const DUMP_FILE_GV   = "dump/dumpTree.gv";
 
+static void dumpConnectNodes(Node* node, FILE* dumpTreeFile);
+static void dumpListNodes   (Node* node, FILE* dumpTreeFile);
+static void caseOperation   (Node* node, const char* operation, FILE* dumpTreeFile);
+
+
 void dumpGraph(Node* node, const char* filePrefix, FILE* html)
 {
+    ASSERT(node, "node = nullptr", stderr);
+    ASSERT(filePrefix, "filePrefix = nullptr", stderr);
+    ASSERT(html, "html = nullptr", stderr);
+
     char gvPath [MAX_NAME_FILE_LEN] = "";
     char pngPath[MAX_NAME_FILE_LEN] = "";
 
@@ -23,20 +32,22 @@ void dumpGraph(Node* node, const char* filePrefix, FILE* html)
     fprintf(gv, "}\n");
     FCLOSE(gv);
 
-    char cmd[2 * MAX_NAME_FILE_LEN] = "";
+    char cmd[2 * MAX_NAME_FILE_LEN + EXTRA_SPACE] = "";
     snprintf(cmd, sizeof(cmd), "dot %s -Tpng -o %s", gvPath, pngPath);
     system(cmd);
 
     fprintf(html,
         "<div class=\"pair\">"
         "<img src=\"%s.png\" alt=\"%s\">"
-        "<span>это %s</span>"
+        "<span>it's %s</span>"
         "</div>\n",
         filePrefix, filePrefix, filePrefix);
 }
 
 void dumpGraphBegin(FILE* html)
 {
+    ASSERT(html, "html = nullptr", stderr);
+
     fprintf(html,
         "<!doctype html>\n<html><head><meta charset=\"utf-8\">"
         "<style>"
@@ -52,11 +63,15 @@ void dumpGraphBegin(FILE* html)
 
 void dumpGraphEnd(FILE* html)
 {
+    ASSERT(html, "html = nullptr", stderr);
     fprintf(html, "</body></html>\n");
 }
 
-void dumpConnectNodes(Node* node, FILE* dumpTreeFile)
+static void dumpConnectNodes(Node* node, FILE* dumpTreeFile)
 {
+    ASSERT(node, "node = nullptr", stderr);
+    ASSERT(dumpTreeFile, "dumpTreeFile = nullptr", stderr);
+    
     if (!node) return;
     
     if (node->left)  
@@ -72,9 +87,10 @@ void dumpConnectNodes(Node* node, FILE* dumpTreeFile)
     }
 }
 
-void dumpListNodes(Node* node, FILE* dumpTreeFile)
+static void dumpListNodes(Node* node, FILE* dumpTreeFile)
 {
-    assert(dumpTreeFile);
+    ASSERT(node, "node = nullptr", stderr);
+    ASSERT(dumpTreeFile, "dumpTreeFile = nullptr", stderr);
 
     if(!node) return;
 
@@ -84,21 +100,21 @@ void dumpListNodes(Node* node, FILE* dumpTreeFile)
             "    node_%p [shape=Mrecord; style = filled; fillcolor = palegreen;"
             " color = \"#000000\"; fontcolor = \"#000000\";  label=\" "
             " {NUMBER ( %lg )| addr: %llX | type: %d| value: %lg | {left: %llX | right: %llX}} \"];\n",
-                        node, node->value.num, (size_t)node, node->type, node->value.num,
-                        (size_t)node->left, (size_t)node->right);                                                                                                   
+                        node, node->value.num, (long long unsigned int)node, (int)node->type, node->value.num,
+                        (long long unsigned int)node->left, (long long unsigned int)node->right);                                                                                                   
     }
     if (node->type == TYPE_VARIABLE)
     {   
         fprintf(dumpTreeFile,
             "    node_%p [shape=Mrecord; style = filled; fillcolor = cornflowerblue;"
             " color = \"#000000\"; fontcolor = \"#000000\";  label=\" "
-            " {VARIABLE ( %c )| addr: %llX | type: %d| value: %lg | {left: %llX | right: %llX}} \"];\n",
-                        node, (char)node->value.var, (size_t)node, node->type, node->value.var, 
-                        (size_t)node->left, (size_t)node->right);                                                                                                                
+            " {VARIABLE ( %c )| addr: %llX | type: %d| value: %c | {left: %llX | right: %llX}} \"];\n",
+                        node, node->value.var, (long long unsigned int)node, (int)node->type, node->value.var, 
+                        (long long unsigned int)node->left, (long long unsigned int)node->right);                                                                                                                
     }
     if (node->type == TYPE_OPERATION)
     {
-        switch ((int)node->value.op)
+        switch (node->value.op)
         {
             case OPERATION_ADD:
             {
@@ -172,14 +188,15 @@ void dumpListNodes(Node* node, FILE* dumpTreeFile)
     if (node->right) dumpListNodes(node->right, dumpTreeFile);
 }
 
-void caseOperation(Node* node, const char* operation, FILE* dumpTreeFile)
+static void caseOperation(Node* node, const char* operation, FILE* dumpTreeFile)
 {
-    assert(node);
-    assert(operation);
-    assert(dumpTreeFile);
+    ASSERT(node, "node = nullptr", stderr);
+    ASSERT(operation, "operation = nullptr", stderr);
+    ASSERT(dumpTreeFile, "dumpTreeFile = nullptr", stderr);
 
     fprintf(dumpTreeFile, 
         "node_%p [shape=Mrecord; style = filled; fillcolor=plum; color = \"#000000\"; fontcolor = \"#000000\";"
-        "label=\" {OPERATION ( %s ) | addr: %llX | type: %d | value: %lg | {left: %llX | right: %llX}} \"];\n", 
-                node, operation, (size_t)node, node->type, node->value.op, (size_t)node->left, (size_t)node->right);                                                                                                          
+        "label=\" {OPERATION ( %s ) | addr: %llX | type: %d | value: %d | {left: %llX | right: %llX}} \"];\n", 
+                node, operation, (long long unsigned int)node, node->type, node->value.op, 
+                (long long unsigned int)node->left, (long long unsigned int)node->right);                                                                                                          
 }

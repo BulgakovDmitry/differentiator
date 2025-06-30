@@ -1,0 +1,34 @@
+digraph G {
+    node [style=filled, fontcolor=darkblue, fillcolor=peachpuff, color="#252A34", penwidth=2.5];
+    bgcolor="lemonchiffon";
+
+node_0x604000001110 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";label=" {OPERATION ( + ) | addr: 604000001110 | type: 3 | value: 1 | {left: 6040000010D0 | right: 604000000F10}} "];
+node_0x6040000010d0 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";label=" {OPERATION ( + ) | addr: 6040000010D0 | type: 3 | value: 1 | {left: 604000001090 | right: 604000000FD0}} "];
+node_0x604000001090 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";label=" {OPERATION ( * ) | addr: 604000001090 | type: 3 | value: 3 | {left: 604000001050 | right: 604000001010}} "];
+    node_0x604000001050 [shape=Mrecord; style = filled; fillcolor = palegreen; color = "#000000"; fontcolor = "#000000";  label="  {NUMBER ( 0 )| addr: 604000001050 | type: 1| value: 0 | {left: 0 | right: 0}} "];
+    node_0x604000001010 [shape=Mrecord; style = filled; fillcolor = cornflowerblue; color = "#000000"; fontcolor = "#000000";  label="  {VARIABLE ( x )| addr: 604000001010 | type: 2| value: x | {left: 0 | right: 0}} "];
+    node_0x604000000fd0 [shape=Mrecord; style = filled; fillcolor = palegreen; color = "#000000"; fontcolor = "#000000";  label="  {NUMBER ( 0 )| addr: 604000000FD0 | type: 1| value: 0 | {left: 0 | right: 0}} "];
+node_0x604000000f10 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";label=" {OPERATION ( * ) | addr: 604000000F10 | type: 3 | value: 3 | {left: 604000000ED0 | right: 604000000C90}} "];
+node_0x604000000ed0 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";label=" {OPERATION ( * ) | addr: 604000000ED0 | type: 3 | value: 3 | {left: 604000000E90 | right: 604000000E50}} "];
+    node_0x604000000e90 [shape=Mrecord; style = filled; fillcolor = palegreen; color = "#000000"; fontcolor = "#000000";  label="  {NUMBER ( 2 )| addr: 604000000E90 | type: 1| value: 2 | {left: 0 | right: 0}} "];
+node_0x604000000e50 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";label=" {OPERATION ( ^ ) | addr: 604000000E50 | type: 3 | value: 5 | {left: 604000000E10 | right: 604000000D50}} "];
+node_0x604000000e10 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";label=" {OPERATION ( + ) | addr: 604000000E10 | type: 3 | value: 1 | {left: 604000000DD0 | right: 604000000D90}} "];
+    node_0x604000000dd0 [shape=Mrecord; style = filled; fillcolor = cornflowerblue; color = "#000000"; fontcolor = "#000000";  label="  {VARIABLE ( x )| addr: 604000000DD0 | type: 2| value: x | {left: 0 | right: 0}} "];
+    node_0x604000000d90 [shape=Mrecord; style = filled; fillcolor = palegreen; color = "#000000"; fontcolor = "#000000";  label="  {NUMBER ( 1 )| addr: 604000000D90 | type: 1| value: 1 | {left: 0 | right: 0}} "];
+    node_0x604000000d50 [shape=Mrecord; style = filled; fillcolor = palegreen; color = "#000000"; fontcolor = "#000000";  label="  {NUMBER ( 1 )| addr: 604000000D50 | type: 1| value: 1 | {left: 0 | right: 0}} "];
+    node_0x604000000c90 [shape=Mrecord; style = filled; fillcolor = palegreen; color = "#000000"; fontcolor = "#000000";  label="  {NUMBER ( 1 )| addr: 604000000C90 | type: 1| value: 1 | {left: 0 | right: 0}} "];
+    node_0x604000001110 -> node_0x6040000010d0;
+    node_0x6040000010d0 -> node_0x604000001090;
+    node_0x604000001090 -> node_0x604000001050;
+    node_0x604000001090 -> node_0x604000001010;
+    node_0x6040000010d0 -> node_0x604000000fd0;
+    node_0x604000001110 -> node_0x604000000f10;
+    node_0x604000000f10 -> node_0x604000000ed0;
+    node_0x604000000ed0 -> node_0x604000000e90;
+    node_0x604000000ed0 -> node_0x604000000e50;
+    node_0x604000000e50 -> node_0x604000000e10;
+    node_0x604000000e10 -> node_0x604000000dd0;
+    node_0x604000000e10 -> node_0x604000000d90;
+    node_0x604000000e50 -> node_0x604000000d50;
+    node_0x604000000f10 -> node_0x604000000c90;
+}

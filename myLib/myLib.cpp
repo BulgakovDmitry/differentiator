@@ -1,4 +1,5 @@
 #include "myLib.hpp"
+#include "math.h"
 
 size_t getFileSize(FILE* file)
 {
@@ -23,4 +24,9 @@ char* readFileToBuffer(FILE* file, size_t size_file)
     size_file = fread(buffer, sizeof(char), size_file, file); // ЗАПОЛЕНИЕ БУФФЕРА
 
     return buffer;
+}
+
+bool doubleCmp(double a, double b) 
+{
+    return !(fabs(a - b) > DOUBLE_EPSILON);
 }

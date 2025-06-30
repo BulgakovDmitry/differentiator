@@ -2,11 +2,6 @@
 #define SIMPLIFY_H
 #include <math.h>
 #include "tree.hpp"
-enum PresenceOfVariable
-{
-    THERE_IS_A_VARIBLE = 1,
-    NO_VARIABLE        = 2,
-};
 
 enum Direction
 {
@@ -15,17 +10,8 @@ enum Direction
     PARENT_DIRECTION,
 };
 
-PresenceOfVariable checkOnPresenceOfVariableInThisSubTree(Node* node);
+Node* constFolding (Node* node);
+Node* optimization(Node* node);
 bool containsVariable(Node* node);
-
-int simplify(Node* root);
-int constantFolding(Node* node);
-int TrivialOperations(Node** node);
-
-
-
-
-
-
 
 #endif

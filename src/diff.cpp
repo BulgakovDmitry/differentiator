@@ -19,7 +19,7 @@ Node* diff(Node* node)
     {
         Node* left  = node->left;
         Node* right = node->right;
-        switch ((int)node->value.op)
+        switch (node->value.op)
         {
             /*case OPERATION_NEG:
             {

@@ -3,15 +3,11 @@
 
 #include "tree.hpp"
 
-void dumpGraph(Node* node, const char* filePrefix, FILE* html);            
-
-void dumpListNodes(Node* node, FILE* dumpTreeFile);                         
-void dumpConnectNodes(Node* node, FILE* dumpTreeFile);                       
-void caseOperation(Node* node, const char* operation, FILE* dumpTreeFile);   
+void dumpGraph     (Node* node, const char* filePrefix, FILE* html);            
 void dumpGraphBegin(FILE* html);
-void dumpGraphEnd(FILE* html);
+void dumpGraphEnd  (FILE* html);
 
-const size_t MAX_NAME_FILE_LEN = 64;
-
+const size_t MAX_NAME_FILE_LEN = 32;
+const size_t EXTRA_SPACE       = 15;
 
 #endif

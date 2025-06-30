@@ -58,10 +58,6 @@ Node* copy(Node* node);
 void dtorTree(Node* node);    
 void deleteNode(Node* node);  
 
-void dumpPrint(Node* node);                                 // Консольный
-void print(Node* node);                                     // dump
-void casePrintOperation(Node* node, const char* operation); // 
-
 void dumpTex(Node* root);                  // Теховский dump
 void printHeadTex(FILE* file);             //
 void printfEndTex(FILE* file);             //

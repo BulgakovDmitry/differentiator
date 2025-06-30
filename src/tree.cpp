@@ -33,7 +33,7 @@ void dtorTree(Node* node)
 {
     if (!node) 
     {
-        fprintf(stderr, RED "node == nullptr\n" RESET); 
+        fprintf(stderr, RED "node == nullptr, impossible to do dtor\n" RESET); 
         return;
     }
 
@@ -69,12 +69,6 @@ void deleteNode(Node* node)
     FREE(node);
 }
 
-void dumpPrint(Node* node)
-{
-    print(node);
-    putchar('\n');
-}
-
 void dumpTex(Node* root)
 {
     assert(root);
@@ -98,7 +92,7 @@ void generateTex(Node* node, FILE* file)
     {
         case TYPE_OPERATION:
         {
-            switch ((int)node->value.op)
+            switch (node->value.op)
             {
                 case OPERATION_ADD:
                 {
@@ -187,12 +181,12 @@ void generateTex(Node* node, FILE* file)
         }  
         case TYPE_NUMBER:
         {
-            fprintf(file, "%lg", node->value);
+            fprintf(file, "%lg", node->value.num);
             break;
         } 
         case TYPE_VARIABLE:
         {
-            fprintf(file, "%c", (char)node->value.var);
+            fprintf(file, "%c", node->value.var);
             break;
         }
         default: 
@@ -218,97 +212,6 @@ void printfEndTex(FILE* file)
     system("pdflatex -output-directory=dumpLatex dumpTex.tex");
 }
 
-void print(Node* node)
-{
-    assert(node);
-
-    printf("%s( %s", BLUE, RESET);
-
-    if (node->left)  print(node->left);
-    //__INFIX_FORM____________________________________________________________________
-    if (node->type == TYPE_OPERATION)
-    {  
-        switch ((int)node->value.op)
-        {
-            case OPERATION_ADD:
-            {
-                casePrintOperation(node, "+");
-                break;
-            }
-            case OPERATION_SUB:
-            {
-                casePrintOperation(node, "-");
-                break;
-            }
-            case OPERATION_MUL:
-            {
-                casePrintOperation(node, "*");
-                break;
-            }
-            case OPERATION_DIV:
-            {
-                casePrintOperation(node, "/");
-                break;
-            }
-            case OPERATION_POW:
-            {
-                casePrintOperation(node, "^");
-                break;
-            }
-            case OPERATION_LOG:
-            {
-                casePrintOperation(node, "log");
-                break;
-            }
-            case OPERATION_ROOT:
-            {
-                casePrintOperation(node, "root");
-                break;
-            }
-            case OPERATION_SIN:
-            {
-                casePrintOperation(node, "sin");
-                break;
-            }
-            case OPERATION_COS:
-            {
-                casePrintOperation(node, "cos");
-                break;
-            }
-            case OPERATION_TG:
-            {
-                casePrintOperation(node, "tg");
-                break;
-            }
-            case OPERATION_LN:
-            {
-                casePrintOperation(node, "ln");
-                break;
-            }
-            case OPERATION_SQRT:
-            {
-                casePrintOperation(node, "sqrt");
-                break;
-            }
-            default:
-            {
-                printf("%s problem with function print%s\n", RED, RESET);
-                break;
-            }
-        }
-    }
-    else if (node->type == TYPE_VARIABLE)
-    {
-        printf("%s%c%s", YELLOW, (int)node->value.var, RESET);
-    }
-    else if (node->type == TYPE_NUMBER) printf("%s%lg%s", GREEN, node->value, RESET);
-    else printf("%sERROR IN FUN PRINT%s\n", RED, RESET);
-    //__INFIX_FORM_____________________________________________________________________
-    if (node->right) print(node->right);
-    
-    printf("%s )%s", BLUE, RESET);
-}
-
 Node* copy(Node* node)
 {
     if(!node) return NULL;
@@ -316,9 +219,3 @@ Node* copy(Node* node)
     return n;
 }
 
-void casePrintOperation(Node* node, const char* operation)
-{
-    assert(node);
-    assert(operation);
-    printf(MANG "%s" RESET, operation);
-}

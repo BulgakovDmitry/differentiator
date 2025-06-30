@@ -1,33 +1,46 @@
 #include "../headers/simplify.hpp"
-#include "../headers/tree.hpp"
-// свёртка констант при выходе из дерева (прм подъёме)
-#define CHECKFLAG(flag_) \
-    if (flag_ > 0) return THERE_IS_A_VARIBLE;
+#include "../headers/tree.hpp"        
 
-#define SEARCH_VAR_IN(direction_)                                 \
-    if (node->direction_)                                         \
-    {                                                             \
-        checkOnPresenceOfVariableInThisSubTree(node->direction_); \
-        CHECKFLAG(flag);                                          \
-    }                                                             \
+static void replaceRightSubtree(Node** root);
+static void replaceLeftSubtree(Node** root);
 
-#define REPLACE(op_enum, sign)                                                     \
-op_enum:                                                                \
-            {                                                           \
-                node->type = TYPE_NUMBER;                               \
-                                                                                    \
-                node->value.num = node->left->value.num sign node->right->value.num;\
-                                                                        \
-                FREE(node->left);                                       \
-                FREE(node->right);                                      \
-                                                                        \
-                node->left = nullptr;                                   \
-                node->right = nullptr;                                  \
-                                                                        \
-                return 1;                                               \
-                                                                        \
-                break;                                                  \
-            }
+static Node* optimisationAdd(Node* node);
+static Node* optimisationSub(Node* node);
+static Node* optimisationMul(Node* node);
+
+#define IS_NUM(direction, x) ((node->direction) && (node->direction)->type == TYPE_NUMBER && doubleCmp((node->direction)->value.num, x))
+
+static void replaceRightSubtree(Node** root)
+{
+    ASSERT(*root, "root = nullptr", stderr);
+    ASSERT(root, "&root = nullptr", stderr);
+
+    Node* oldRoot = *root;
+    Node* newRoot = oldRoot->right;
+
+    oldRoot->right = nullptr;
+    dtorTree(oldRoot->left);   
+    oldRoot->left = nullptr;
+
+    dtorTree(oldRoot);         
+    *root = newRoot;  
+}
+
+static void replaceLeftSubtree(Node** root)
+{
+    ASSERT(*root, "root = nullptr", stderr);
+    ASSERT(root, "&root = nullptr", stderr);
+    
+    Node* oldRoot = *root;
+    Node* newRoot = oldRoot->left;
+
+    oldRoot->left = nullptr;   
+    dtorTree(oldRoot->right);  
+    oldRoot->right = nullptr;
+
+    dtorTree(oldRoot);
+    *root = newRoot;
+}
 
 bool containsVariable(Node* node) 
 {
@@ -47,320 +60,119 @@ bool containsVariable(Node* node)
     }
     return false;
 }
-/*
-PresenceOfVariable checkOnPresenceOfVariableInThisSubTree(Node* node) 
+
+Node* constFolding (Node* node)
 {
-    assert(node);
-    static int flag = 0;
-    if (node->type != TYPE_VARIABLE)
+    if (!node) return nullptr;
+
+    if (node->left)  node->left  = constFolding(node->left);
+    if (node->right) node->right = constFolding(node->right);
+
+    if (node->type == TYPE_OPERATION && !containsVariable(node))
     {
-        SEARCH_VAR_IN(left);
-        SEARCH_VAR_IN(right);
-        return NO_VARIABLE;
+        double lhs = node->left  ? node->left ->value.num : 0; 
+        double rhs = node->right ? node->right->value.num : 0;
+        double res = 0;
+
+        switch (node->value.op)
+        {
+            case OPERATION_ADD:  res = lhs + rhs;             break;
+            case OPERATION_SUB:  res = lhs - rhs;             break;
+            case OPERATION_MUL:  res = lhs * rhs;             break;
+            case OPERATION_DIV:  res = lhs / rhs;             break;
+            case OPERATION_POW:  res = pow(lhs, rhs);         break;
+
+            case OPERATION_SIN:  res = sin(rhs);         break;
+            case OPERATION_COS:  res = cos(rhs);         break;
+            case OPERATION_TG:   res = tan(rhs);         break;
+            case OPERATION_LN:   res = log(rhs);         break;
+            case OPERATION_SQRT: res = sqrt(rhs);        break;
+
+            default: return node; 
+        }
+
+        if (node->left)  
+        { 
+            dtorTree(node->left);  
+            node->left  = nullptr; 
+        }
+        if (node->right)
+        { 
+            dtorTree(node->right); 
+            node->right = nullptr; 
+        }
+
+        node->type       = TYPE_NUMBER;
+        node->value.num  = res;
+        node->value.op   = 0;
+        node->left       = nullptr;
+        node->right      = nullptr;
     }
-    else    
-    {
-        flag++; 
-        return THERE_IS_A_VARIBLE;
-    }
+
+    return node;
 }
 
-Value_t calculateSubTree(Node* node, const Value_t variable)
+Node* optimization(Node* node)
 {
-    if (!node)
+    ASSERT(node, "node = nullptr, impossible to optimizate", stderr);
+
+    if (node->left)  node->left  = optimization(node->left);
+    if (node->right) node->right = optimization(node->right);
+
+    if (node->type == TYPE_OPERATION)
     {
-        printf(RED "ERROR IN FUNCTION calculateSubTree\n" RESET);
-        assert(false);
+        switch (node->value.op)
+        {
+            case OPERATION_ADD:
+                node = optimisationAdd(node);
+                break;
+
+            case OPERATION_SUB:
+                node = optimisationSub(node);  
+                break;
+
+            case OPERATION_MUL:
+                node = optimisationMul(node); 
+                break;
+
+            default:
+                //TODO add another oper
+                break;
+        }
     }
 
-    switch ((int)node->type)
-    {
-        case TYPE_NUMBER:
-        {
-            return node->value;
-        }
-        case TYPE_VARIABLE:
-        {
-            return variable;
-        }
-        case TYPE_OPERATION:
-        {
-            switch ((int)node->value.op)
-            {
-                case OPERATION_ADD:
-                {
-                    return calculateSubTree(node->left, variable) + calculateSubTree(node->right, variable); // CALC_SUBTREE(+);
-                }
-                case OPERATION_SUB:
-                {
-                    return calculateSubTree(node->left, variable) - calculateSubTree(node->right, variable); // CALC_SUBTREE(-);
-                }
-                case OPERATION_MUL:
-                {
-                    return calculateSubTree(node->left, variable) * calculateSubTree(node->right, variable); 
-                }
-                case OPERATION_DIV:
-                {
-                    return calculateSubTree(node->left, variable) / calculateSubTree(node->right, variable);
-                }
-                case OPERATION_POW:
-                {
-                    return pow(calculateSubTree(node->left, variable), calculateSubTree(node->right, variable));
-                }
-                case OPERATION_LOG:
-                {
-                    return log(calculateSubTree(node->right, variable))/log(calculateSubTree(node->left, variable));
-                }
-                case OPERATION_SQRT:
-                {
-                    return sqrt(calculateSubTree(node->right, variable));
-                }
-                default:
-                {
-                    printf(RED "UNDEFINED OPERATION\n" RESET);
-                    return 0;
-                    assert(false);
-                }
-            }
-        }
-    }
-    return NULL;
+    return node;
 }
 
-int simplify(Node* root)
+static Node* optimisationAdd(Node* node)
 {
-    if(!root)
-    {
-        printf(RED "ERROR: Bad root\n" RESET);
-        assert(false);
-    }
+    ASSERT(node, "node = nullptr, impossible to do optimisationAdd", stderr);
 
-    int simplifyQuantity = 1;
+    if      (IS_NUM(left,  0)) {replaceRightSubtree(&node);}
+    else if (IS_NUM(right, 0)) {replaceLeftSubtree (&node);}
 
-    while(simplifyQuantity)
-    {
-        simplifyQuantity = 0;
-
-        int temp = constantFolding(root);
-
-        temp += TrivialOperations(&root);        
-
-        simplifyQuantity += temp;
-
-
-    }
-
-    dumpGraph(root);
-    
-    return 0;
+    return node;
 }
 
-int constantFolding(Node* node)
+static Node* optimisationSub(Node* node)
 {
-    if(node->type == TYPE_OPERATION && node->left && node->right && node->left->type == TYPE_NUMBER && node->right->type == TYPE_NUMBER)
-    {
-        switch ((int)node->value)
-        {
-        case REPLACE(OPERATION_ADD, +)
-        case REPLACE(OPERATION_SUB, -)
-        case REPLACE(OPERATION_MUL, *)
-        case REPLACE(OPERATION_DIV, /)
-        
-        case OPERATION_POW:
-            {
-                node->type = TYPE_NUMBER;
+    ASSERT(node, "node = nullptr, impossible to do optimisationSUB", stderr);
 
-                int tempval = node->left->value;
+    if (IS_NUM(right, 0)) 
+        replaceLeftSubtree(&node);
 
-                for(int i = 0; i < node->right->value - 1; i++)
-                {
-                    tempval *= node->left->value;
-                }
-
-                node->value = tempval;
-
-                FREE(node->left);
-                FREE(node->right);
-
-                return 1;
-
-                break;
-            }
-
-        default:
-            printf("Unknown operation in folding\n");
-            break;
-        }
-    }
-    else
-    {    
-        if(node->left)
-        {
-            if(node->left->type == TYPE_OPERATION)
-            {
-                return constantFolding(node->left);
-            }
-        }
-        if(node->right)
-        {
-            if(node->right->type == TYPE_OPERATION)
-            {
-                return constantFolding(node->right);
-            }
-        }
-    }
-
-    return 0;
+    return node;
 }
 
-int TrivialOperations(Node** node)
+static Node* optimisationMul(Node* node)
 {
-    if((*node)->type == TYPE_OPERATION)
-    {
-        switch ((int)(*node)->value)
-        {
-        case OPERATION_ADD:
-            {
-                if((*node)->left->type == TYPE_NUMBER && (*node)->left->value == 0)
-                {
-                    (*node) = (*node)->right;
-
-                    return 1;
-                }
-                if((*node)->right->type == TYPE_NUMBER && (*node)->right->value == 0)
-                {
-                    (*node) = (*node)->left;
-
-                    return 1;
-                }
-
-                break;
-            }
-
-        case OPERATION_SUB:
-            {
-                if((*node)->right->type == TYPE_NUMBER && (*node)->right->value == 0)
-                {
-                    (*node) = (*node)->right;
-
-                    return 1;
-                }
-
-                break;
-            }
-
-        case OPERATION_MUL:
-            {
-                if(((*node)->left->type == TYPE_NUMBER && (*node)->left->value == 0) || ((*node)->right->type == TYPE_NUMBER && (*node)->right->value == 0))
-                {
-                    (*node)->type = TYPE_NUMBER;
-                    (*node)->value = 0;
-
-                    FREE((*node)->right);
-                    FREE((*node)->left);
-
-                    return 1;
-                }
-
-                if((*node)->left->type == TYPE_NUMBER && (*node)->left->value == 1)
-                {
-                    (*node) = (*node)->right;
-
-                    return 1;
-                }
-
-                if((*node)->right->type == TYPE_NUMBER && (*node)->right->value == 1)
-                {
-                    (*node) = (*node)->left;
-
-                    return 1;
-                }
-
-                break;
-            }
-
-        case OPERATION_DIV:
-            {
-                if((*node)->left->type == TYPE_NUMBER && (*node)->left->value == 0)
-                {
-                    (*node)->type = TYPE_NUMBER;
-                    (*node)->value = 0;
-
-                    FREE((*node)->right);
-                    FREE((*node)->left);
-
-                    return 1;
-                }
-                
-                if((*node)->right->type == TYPE_NUMBER &&  (*node)->right->value == 1)
-                {
-                    (*node) = (*node)->left;
-
-                    return 1;
-                }
-    
-
-                break;
-            }
-     
-        case OPERATION_POW:
-        {   
-            if((*node)->right->type == TYPE_NUMBER && (*node)->right->value == 0)
-            {
-                (*node)->type = TYPE_NUMBER;
-                (*node)->value = 1;
-
-                FREE((*node)->left);
-                FREE((*node)->right);
-
-                return 1;
-            }
-            else
-            {
-                if((*node)->left->type == TYPE_NUMBER && (*node)->left->value == 1)
-                {
-                    (*node)->type = TYPE_NUMBER;
-                    (*node)->value = 1;
-
-                    FREE((*node)->left);
-                    FREE((*node)->right);
-
-                    return 1;
-                }
-                if((*node)->right->type == TYPE_NUMBER && (*node)->right->value == 1)
-                {
-                    (*node) = (*node)->left;
-
-                    return 1;
-                }
-            }
-
-            break;
-        }   
-        
-        default:
-            break;
-        }
-    }
-
-    int val = 0;
-
-    if((*node)->left)
-    {
-        if((*node)->left->type == TYPE_OPERATION)
-        {
-            val += TrivialOperations(&((*node)->left));
-        }
-    }
+    ASSERT(node, "node = nullptr, impossible to do optimisationMul", stderr);
 
 
-    if((*node)->right)
-    {
-        if((*node)->right->type == TYPE_OPERATION)
-        {
-            val += TrivialOperations(&((*node)->right));
-        }
-    }
+    if      (IS_NUM(left,  0)) {replaceLeftSubtree (&node);}
+    else if (IS_NUM(left,  1)) {replaceRightSubtree(&node);}
+    else if (IS_NUM(right, 0)) {replaceRightSubtree(&node);}
+    else if (IS_NUM(right, 1)) {replaceLeftSubtree (&node);}
 
-    return val;
-}*/
+    return node;
+}
