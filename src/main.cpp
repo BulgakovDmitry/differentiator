@@ -7,9 +7,10 @@
 #include "../headers/diff.hpp"
 #include "../headers/graphDump.hpp"
 #include "../headers/consoleDump.hpp"
+#include "../headers/texDump.hpp"
 
-extern const char* const HTML_FILE_NAME = "dump/htmlDumpFile"; //xdg-open /home/user/Desktop/differentiator/dump/htmlDumpFile
-extern const char* const TEX_FILE_NAME  = "dump/texDumpFile";
+extern const char* const HTML_FILE_NAME = "dumpGraph/htmlDumpFile"; //xdg-open /home/user/Desktop/differentiator/dumpGraph/htmlDumpFile
+extern const char* const TEX_FILE_NAME  = "dumpGraph/texDumpFile";
 
 int main()
 {
@@ -20,31 +21,20 @@ int main()
     ASSERT(texFile, "texFile = nullptr", stderr);
 
     //Node* root = _ADD(_MUL(_NUM(0), _VAR('x')), _POW(_ADD(_VAR('x'), _NUM(1)), _NUM(2)));
+    Node* root = _ADD(_VAR('x'), _MUL(_NUM(3), _SIN(_VAR('x'))));
+    dumpTex(root);
     //Node* root = _MUL(_NUM(5), _VAR('x'));
-    //Node* root = _DIV(_VAR('x'), _NUM(1));
-    Node* root = _MUL(_VAR('x'), _LN(_VAR('x')));
-    root = simplify(root);
+    //Node* root = _MUL(_VAR('x'), _LN(_VAR('x')));
+    //Node* root = _POW(_VAR('x'), _VAR('x'));
     //Node* root = read();
     
     Node* deriv = diff(root);
-    deriv = simplify(deriv);
     
-    dumpGraphBegin(htmlFile);
-    
-    dumpGraph(root , "root" , htmlFile);  
-
-    dumpGraph(deriv, "deriv", htmlFile);  
-
-    
-    dumpGraphEnd(htmlFile);
+    dumpGraph(root, deriv, htmlFile);
     
     //dumpConsole(root, "root");
     //dumpConsole(deriv, "deriv");
-
-    //simplify(root);  // УПРАЩЕНИЕ ДЕРЕВА
     
-    //dumpTex  (root); // ТЕХОВСКИЙ   dump
-
     dtorTree(root);
 
     dtorTree(deriv);

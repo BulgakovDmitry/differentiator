@@ -1,13 +1,39 @@
 #include "../headers/graphDump.hpp"
+#include "../headers/simplify.hpp"
 
-extern const char* const DUMP_FILE_GV   = "dump/dumpTree.gv";
+extern const char* const DUMP_FILE_GV   = "dumpGraph/dumpTree.gv";
+
+static void dumpGraphSubTree(Node* node, const char* filePrefix, FILE* html);            
+static void dumpGraphBegin  (FILE* html);
+static void dumpGraphEnd    (FILE* html);
 
 static void dumpConnectNodes(Node* node, FILE* dumpTreeFile);
 static void dumpListNodes   (Node* node, FILE* dumpTreeFile);
 static void caseOperation   (Node* node, const char* operation, FILE* dumpTreeFile);
+ 
+void dumpGraph(Node* root, Node* deriv, FILE* html)
+{
+    ASSERT(root,  "root  = nullptr", stderr);
+    ASSERT(deriv, "deriv = nullptr", stderr);
+    ASSERT(html,  "html = nullptr",  stderr);
 
+    Node* rootSimpl  = simplify(copy(root));
+    Node* derivSimpl = simplify(copy(deriv));
 
-void dumpGraph(Node* node, const char* filePrefix, FILE* html)
+    dumpGraphBegin(html);
+
+    dumpGraphSubTree(root,       ROOT_NAME,        html);         
+    dumpGraphSubTree(rootSimpl,  ROOT_SIMPL_NAME,  html);                                    
+    dumpGraphSubTree(deriv,      DERIV_NAME,       html);                   
+    dumpGraphSubTree(derivSimpl, DERIV_SIMPL_NAME, html);         
+                                                           
+    dumpGraphEnd(html);
+    
+    dtorTree(rootSimpl);
+    dtorTree(derivSimpl);
+}
+
+static void dumpGraphSubTree(Node* node, const char* filePrefix, FILE* html)
 {
     ASSERT(node, "node = nullptr", stderr);
     ASSERT(filePrefix, "filePrefix = nullptr", stderr);
@@ -16,8 +42,8 @@ void dumpGraph(Node* node, const char* filePrefix, FILE* html)
     char gvPath [MAX_NAME_FILE_LEN] = "";
     char pngPath[MAX_NAME_FILE_LEN] = "";
 
-    snprintf(gvPath,  sizeof(gvPath),  "dump/%s.gv",  filePrefix);
-    snprintf(pngPath, sizeof(pngPath), "dump/%s.png", filePrefix);
+    snprintf(gvPath,  sizeof(gvPath),  "dumpGraph/%s.gv",  filePrefix);
+    snprintf(pngPath, sizeof(pngPath), "dumpGraph/%s.png", filePrefix);
 
     FILE* gv = fopen(gvPath, "wb");
     ASSERT(gv, "dumpGraph fopen", stderr);
@@ -44,7 +70,7 @@ void dumpGraph(Node* node, const char* filePrefix, FILE* html)
         filePrefix, filePrefix, filePrefix);
 }
 
-void dumpGraphBegin(FILE* html)
+static void dumpGraphBegin(FILE* html)
 {
     ASSERT(html, "html = nullptr", stderr);
 
@@ -61,7 +87,7 @@ void dumpGraphBegin(FILE* html)
         "</style></head><body>\n");
 }
 
-void dumpGraphEnd(FILE* html)
+static void dumpGraphEnd(FILE* html)
 {
     ASSERT(html, "html = nullptr", stderr);
     fprintf(html, "</body></html>\n");

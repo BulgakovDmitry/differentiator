@@ -195,9 +195,6 @@ static Node* constFolding (Node* node)
     return node;
 }
 
-
-
-
 static Node* optimization(Node* node)
 {
     ASSERT(node, "node = nullptr, impossible to optimizate", stderr);
@@ -300,7 +297,6 @@ static Node* optimisationPow(Node* node)
     
     return node;
 }
-
 
 bool containsVariable(Node* node) 
 {

@@ -43,7 +43,6 @@ enum Operations
 
 const double PI = 3.1415;
 const double E  = 2.7183;
-const char* const DUMPTEX_FILE_NAME = "dumpTex.tex";
 
 struct Node
 {
@@ -57,13 +56,5 @@ Node* copy(Node* node);
 
 void dtorTree(Node* node);    
 void deleteNode(Node* node);  
-
-void dumpTex(Node* root);                  // Теховский dump
-void printHeadTex(FILE* file);             //
-void printfEndTex(FILE* file);             //
-void generateTex(Node* node, FILE* file);  //
-
-
-
 
 #endif
