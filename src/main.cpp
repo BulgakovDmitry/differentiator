@@ -19,27 +19,21 @@ int main()
     FILE* texFile = fopen(TEX_FILE_NAME, "w");
     ASSERT(texFile, "texFile = nullptr", stderr);
 
-    Node* root = _ADD(_MUL(_NUM(0), _VAR('x')), _POW(_ADD(_VAR('x'), _NUM(1)), _NUM(2)));
-    Node* rootWithConstFolding = constFolding(copy(root));
-    Node* rootOpt = optimization(copy(root));
+    //Node* root = _ADD(_MUL(_NUM(0), _VAR('x')), _POW(_ADD(_VAR('x'), _NUM(1)), _NUM(2)));
     //Node* root = _MUL(_NUM(5), _VAR('x'));
-
-
+    //Node* root = _DIV(_VAR('x'), _NUM(1));
+    Node* root = _MUL(_VAR('x'), _LN(_VAR('x')));
+    root = simplify(root);
     //Node* root = read();
     
     Node* deriv = diff(root);
-    Node* derivWithConstFolding = constFolding(copy(deriv));
-    Node* derivOpt = optimization(copy(deriv));
+    deriv = simplify(deriv);
     
     dumpGraphBegin(htmlFile);
     
     dumpGraph(root , "root" , htmlFile);  
-    dumpGraph(rootWithConstFolding , "rootWithConstFolding" , htmlFile);   
-    dumpGraph(rootOpt , "rootOpt" , htmlFile);  
 
     dumpGraph(deriv, "deriv", htmlFile);  
-    dumpGraph(derivWithConstFolding, "derivWithConstFolding", htmlFile);   
-    dumpGraph(derivOpt, "derivOpt", htmlFile);  
 
     
     dumpGraphEnd(htmlFile);
@@ -52,12 +46,8 @@ int main()
     //dumpTex  (root); // ТЕХОВСКИЙ   dump
 
     dtorTree(root);
-    dtorTree(rootWithConstFolding);
-    dtorTree(rootOpt);
 
     dtorTree(deriv);
-    dtorTree(derivWithConstFolding);
-    dtorTree(derivOpt);
 
     FCLOSE(htmlFile);
     FCLOSE(texFile);    

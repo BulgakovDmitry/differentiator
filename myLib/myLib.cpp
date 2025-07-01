@@ -28,5 +28,5 @@ char* readFileToBuffer(FILE* file, size_t size_file)
 
 bool doubleCmp(double a, double b) 
 {
-    return !(fabs(a - b) > DOUBLE_EPSILON);
+    return (fabs(a - b) < DOUBLE_EPSILON);
 }
