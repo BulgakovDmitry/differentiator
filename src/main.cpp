@@ -20,24 +20,32 @@ int main()
     FILE* texFile = fopen(TEX_FILE_NAME, "w");
     ASSERT(texFile, "texFile = nullptr", stderr);
 
-    //Node* root = _ADD(_MUL(_NUM(0), _VAR('x')), _POW(_ADD(_VAR('x'), _NUM(1)), _NUM(2)));
-    Node* root = _ADD(_VAR('x'), _MUL(_NUM(3), _SIN(_VAR('x'))));
-    dumpTex(root);
+    Node* root = _ADD(_MUL(_NUM(0), _VAR('x')), _POW(_ADD(_VAR('x'), _NUM(1)), _NUM(2)));
     //Node* root = _MUL(_NUM(5), _VAR('x'));
     //Node* root = _MUL(_VAR('x'), _LN(_VAR('x')));
     //Node* root = _POW(_VAR('x'), _VAR('x'));
     //Node* root = read();
-    
+
+    //Node* root = _ADD(_VAR('x'), _MUL(_NUM(3), _SIN(_VAR('x'))));
+
+    size_t countRoot = 0;
+    Node* rootSimpl = simplify(copy(root), &countRoot);
+
     Node* deriv = diff(root);
     
-    dumpGraph(root, deriv, htmlFile);
+    size_t countDeriv = 0;
+    Node* derivSimpl = simplify(copy(deriv), &countDeriv);
+    
+    dumpGraph(root, deriv, rootSimpl, derivSimpl, htmlFile);
+    dumpTex(root, deriv, rootSimpl, derivSimpl, countRoot, countDeriv);
     
     //dumpConsole(root, "root");
     //dumpConsole(deriv, "deriv");
     
     dtorTree(root);
-
+    dtorTree(rootSimpl);
     dtorTree(deriv);
+    dtorTree(derivSimpl);
 
     FCLOSE(htmlFile);
     FCLOSE(texFile);    

@@ -11,14 +11,14 @@ static void dumpConnectNodes(Node* node, FILE* dumpTreeFile);
 static void dumpListNodes   (Node* node, FILE* dumpTreeFile);
 static void caseOperation   (Node* node, const char* operation, FILE* dumpTreeFile);
  
-void dumpGraph(Node* root, Node* deriv, FILE* html)
+void dumpGraph(Node* root, Node* deriv, Node* rootSimpl, Node* derivSimpl, FILE* html)
 {
-    ASSERT(root,  "root  = nullptr", stderr);
-    ASSERT(deriv, "deriv = nullptr", stderr);
-    ASSERT(html,  "html = nullptr",  stderr);
+    ASSERT(root,       "root = nullptr",       stderr);
+    ASSERT(deriv,      "deriv = nullptr",      stderr);
+    ASSERT(rootSimpl,  "rootSimpl = nullptr",  stderr);
+    ASSERT(derivSimpl, "derivSimpl = nullptr", stderr);
+    ASSERT(html,       "html = nullptr",       stderr);
 
-    Node* rootSimpl  = simplify(copy(root));
-    Node* derivSimpl = simplify(copy(deriv));
 
     dumpGraphBegin(html);
 
@@ -28,9 +28,6 @@ void dumpGraph(Node* root, Node* deriv, FILE* html)
     dumpGraphSubTree(derivSimpl, DERIV_SIMPL_NAME, html);         
                                                            
     dumpGraphEnd(html);
-    
-    dtorTree(rootSimpl);
-    dtorTree(derivSimpl);
 }
 
 static void dumpGraphSubTree(Node* node, const char* filePrefix, FILE* html)

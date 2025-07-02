@@ -19,7 +19,7 @@ static Node* optimisationPow(Node* node);
 #define IS_NUM_ON_DIRECTION(direction, x) \
     ((node->direction) && (node->direction)->type == TYPE_NUMBER && doubleCmp((node->direction)->value.num, x))
 
-Node* simplify(Node* node)
+Node* simplify(Node* node, size_t* count)
 {
     bool flagConstFolding  = true;
     bool flagOptimizations = true;
@@ -30,6 +30,7 @@ Node* simplify(Node* node)
         {
             node = constFolding(node);
             flagConstFolding = true;
+            (*count)++;
         }
         else 
             flagConstFolding = false;
@@ -38,6 +39,7 @@ Node* simplify(Node* node)
         {
             node = optimization(node);
             flagOptimizations = true;
+            (*count)++;
         }
         else 
             flagOptimizations = false;

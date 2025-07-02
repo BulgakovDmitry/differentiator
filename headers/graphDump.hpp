@@ -3,8 +3,7 @@
 
 #include "tree.hpp"
 
-void dumpGraph(Node* root, Node* deriv, FILE* html);
-
+void dumpGraph(Node* root, Node* deriv, Node* rootSimpl, Node* derivSimpl, FILE* html);
 
 const size_t MAX_NAME_FILE_LEN = 32;
 const size_t EXTRA_SPACE       = 15;

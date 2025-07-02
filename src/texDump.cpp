@@ -5,12 +5,14 @@ static void dumpTexTitlePage (FILE* file);
 static void dumpTexEnd(FILE* file);             
 
 static void generateTexExpression(Node* node, FILE* file);
-static void writeTexStartExpression(Node* node, FILE* file);
+static void writeTexExpression(Node* node, FILE* file, size_t count, const char* text);
 
-
-void dumpTex(Node* root)
+void dumpTex(Node* root, Node* deriv, Node* rootSimpl, Node* derivSimpl, size_t countRoot, size_t counstDeriv)
 {
-    ASSERT(root, "root = nullptr", stderr);
+    ASSERT(root,       "root = nullptr",       stderr);
+    ASSERT(deriv,      "deriv = nullptr",      stderr);
+    ASSERT(rootSimpl,  "rootSimpl = nullptr",  stderr);
+    ASSERT(derivSimpl, "derivSimpl = nullptr", stderr);
 
     FILE* dumpTexFile = fopen(DUMPTEX_FILE_NAME, "w");
     ASSERT(dumpTexFile, "dumpTexFile = nullptr, impossible to open", stderr);
@@ -18,8 +20,11 @@ void dumpTex(Node* root)
     dumpTexBegin(dumpTexFile);
     dumpTexTitlePage(dumpTexFile);
     //тело функции
-    writeTexStartExpression(root, dumpTexFile);
+    writeTexExpression(root, dumpTexFile, 1, "The original form of the mathematical expression");
+    writeTexExpression(rootSimpl, dumpTexFile, countRoot, "The original form can be simplified");
 
+    writeTexExpression(deriv, dumpTexFile, 1, "We obtain the derivative");
+    writeTexExpression(derivSimpl, dumpTexFile, counstDeriv, "The filna form can be simplified");
     //
     dumpTexEnd(dumpTexFile);
 
@@ -83,7 +88,7 @@ static void dumpTexTitlePage (FILE* file)
     "  \\end{tikzpicture}\n"
 
     "\\end{titlepage}\n"
-    "\\newpage\n",
+    "\\newpage\n\n",
     file);
 }
 
@@ -205,14 +210,19 @@ static void generateTexExpression(Node* node, FILE* file)
     }
 }
 
-static void writeTexStartExpression(Node* node, FILE* file)
+static void writeTexExpression(Node* node, FILE* file, size_t count, const char* text)
 {
     ASSERT(node, "node = nullptr, impossible to write tex", stderr);
     ASSERT(file, "file = nullptr, impossible to write tex", stderr);
 
-    fputs("\\section{The original form of the mathematical expression}\n", file);
+    if (count != 0)
+    {
+        //fputs(text, file);
+        fprintf(file, "\\section{%s}\n", text);
 
-    fprintf(file, "\\[");
-    generateTexExpression(node, file);
-    fprintf(file, "\\]");
+        fprintf(file, "\t\\[");
+        generateTexExpression(node, file);
+        fprintf(file, "\\]\n");
+    }
 }
+
