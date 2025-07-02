@@ -5,8 +5,8 @@ static void print(Node* node);
 
 void dumpConsole(Node* node, const char* prefix)
 {
-    ASSERT(node, "node = nullptr", stderr);
-    ASSERT(prefix, "prefix = nullptr", stderr);
+    ASSERT(node, "node = nullptr, impossible to print in consol tree with null root", stderr);
+    ASSERT(prefix, "prefix = nullptr, impossible write null text on graph",           stderr);
 
     printf(RED"__________CONSOLE_DUMP_%s________________________________________\n"RESET, prefix);
     print(node);
@@ -15,7 +15,7 @@ void dumpConsole(Node* node, const char* prefix)
 
 static void print(Node* node)
 {
-    ASSERT(node, "node = nullptr", stderr);
+    ASSERT(node, "node = nullptr, impossible write null text on graph", stderr);
 
     printf("%s( %s", BLUE, RESET);
 
@@ -106,7 +106,7 @@ static void print(Node* node)
     if (node->right) 
         print(node->right);
     
-    printf("%s )%s", BLUE, RESET);
+    printf(BLUE" )"RESET);
 }
 
 static void casePrintOperation(const char* operation)

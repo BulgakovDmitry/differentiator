@@ -1,34 +1,31 @@
 #include "texDump.hpp"
 
-static void dumpTexBegin(FILE* file);             
-static void dumpTexTitlePage (FILE* file);
-static void dumpTexEnd(FILE* file);             
+static void dumpTexBegin    (FILE* file);             
+static void dumpTexTitlePage(FILE* file);
+static void dumpTexEnd      (FILE* file);             
 
 static void generateTexExpression(Node* node, FILE* file);
-static void writeTexExpression(Node* node, FILE* file, size_t count, const char* text);
+static void writeTexExpression   (Node* node, FILE* file, size_t count, const char* text);
 
-void dumpTex(Node* root, Node* deriv, Node* rootSimpl, Node* derivSimpl, size_t countRoot, size_t counstDeriv)
+void dumpTex(Node* root, Node* deriv, Node* rootSimpl, Node* derivSimpl, size_t countRoot, size_t countDeriv, FILE* tex)
 {
-    ASSERT(root,       "root = nullptr",       stderr);
-    ASSERT(deriv,      "deriv = nullptr",      stderr);
-    ASSERT(rootSimpl,  "rootSimpl = nullptr",  stderr);
-    ASSERT(derivSimpl, "derivSimpl = nullptr", stderr);
-
-    FILE* dumpTexFile = fopen(DUMPTEX_FILE_NAME, "w");
-    ASSERT(dumpTexFile, "dumpTexFile = nullptr, impossible to open", stderr);
+    ASSERT(root,       "root = nullptr, impossible to write tex tree with null root",       stderr);
+    ASSERT(deriv,      "deriv = nullptr, impossible to write tex tree with null root",      stderr);
+    ASSERT(rootSimpl,  "rootSimpl = nullptr, impossible to write tex tree with null root",  stderr);
+    ASSERT(derivSimpl, "derivSimpl = nullptr, impossible to write tex tree with null root", stderr);
+    ASSERT(tex,        "texFile = nullptr, impossible to write in null file",               stderr);
     
-    dumpTexBegin(dumpTexFile);
-    dumpTexTitlePage(dumpTexFile);
-    //тело функции
-    writeTexExpression(root, dumpTexFile, 1, "The original form of the mathematical expression");
-    writeTexExpression(rootSimpl, dumpTexFile, countRoot, "The original form can be simplified");
+    dumpTexBegin(tex);
 
-    writeTexExpression(deriv, dumpTexFile, 1, "We obtain the derivative");
-    writeTexExpression(derivSimpl, dumpTexFile, counstDeriv, "The filna form can be simplified");
-    //
-    dumpTexEnd(dumpTexFile);
+    dumpTexTitlePage(tex);
+    writeTexExpression(root, tex, 1, "The original form of the mathematical expression");
+    writeTexExpression(rootSimpl, tex, countRoot, "The original form can be simplified");
+    writeTexExpression(deriv, tex, 1, "We obtain the derivative");
+    writeTexExpression(derivSimpl, tex, countDeriv, "The final form can be simplified");
 
-    FCLOSE(dumpTexFile);
+    dumpTexEnd(tex);
+
+    fflush(tex);
 
     const int ret = system("pdflatex -interaction=nonstopmode -halt-on-error "
                             "-output-directory=dumpLatex dumpTex.tex "
@@ -40,7 +37,6 @@ void dumpTex(Node* root, Node* deriv, Node* rootSimpl, Node* derivSimpl, size_t 
 static void dumpTexBegin(FILE* file)
 {
     ASSERT(file, "file = nullptr, impossible to open", stderr);
-
     fputs(
         "\\documentclass[12pt, letterpaper, twoside]{article}\n"
         "\\usepackage[utf8]{inputenc}\n"
@@ -58,7 +54,6 @@ static void dumpTexBegin(FILE* file)
         "\\color{white}\n"
         "\\usetikzlibrary{calc}\n\n"
         "\\begin{document}\n",
-    
         file);
 }
 
@@ -79,17 +74,17 @@ static void dumpTexTitlePage (FILE* file)
         "  \\vspace{2em}\n" 
         "  \\quad \\today\\\\\n"
 
-    "  \\vfill\n" 
-    "  \\begin{tikzpicture}[remember picture,overlay]\n"
-    "    \\fill[accent] (current page.south west) rectangle ++(\\paperwidth,1.5cm);\n"
-    "    \\node[font=\\bfseries\\LARGE, text=black, align=center]\n"
-    "      at ([xshift=0.5\\paperwidth,yshift=0.75cm]current page.south west)\n"
-    "      {Project author: Bulgakov Dmitry};\n"
-    "  \\end{tikzpicture}\n"
+        "  \\vfill\n" 
+        "  \\begin{tikzpicture}[remember picture,overlay]\n"
+        "    \\fill[accent] (current page.south west) rectangle ++(\\paperwidth,1.5cm);\n"
+        "    \\node[font=\\bfseries\\LARGE, text=black, align=center]\n"
+        "      at ([xshift=0.5\\paperwidth,yshift=0.75cm]current page.south west)\n"
+        "      {Project author: Bulgakov Dmitry};\n"
+        "  \\end{tikzpicture}\n"
 
-    "\\end{titlepage}\n"
-    "\\newpage\n\n",
-    file);
+        "\\end{titlepage}\n"
+        "\\newpage\n\n",
+        file);
 }
 
 static void dumpTexEnd(FILE* file)
@@ -100,8 +95,8 @@ static void dumpTexEnd(FILE* file)
 
 static void generateTexExpression(Node* node, FILE* file)
 {
-    ASSERT(node, "node = nullptr, impossible to write tex", stderr);
-    ASSERT(file, "file = nullptr, impossible to write tex", stderr);
+    ASSERT(node, "node = nullptr, impossible to write tex",          stderr);
+    ASSERT(file, "file = nullptr, impossible to write in null file", stderr);
 
     switch ((int)node->type)
     {
@@ -186,7 +181,7 @@ static void generateTexExpression(Node* node, FILE* file)
                 }
                 default:
                 {
-                    printf(RED "ERROR IN FUNCTION generateTexExpression\n" RESET);\
+                    printf(RED "ERROR IN FUNCTION generateTexExpression\n" RESET);
                     abort();
                 }
             }
@@ -204,7 +199,7 @@ static void generateTexExpression(Node* node, FILE* file)
         }
         default: 
         {
-            printf(RED "ERROR IN FUNCTION generateTex (2)\n" RESET);
+            printf(RED "ERROR IN FUNCTION generateTex\n" RESET);
             abort();
         }
     }
@@ -212,12 +207,11 @@ static void generateTexExpression(Node* node, FILE* file)
 
 static void writeTexExpression(Node* node, FILE* file, size_t count, const char* text)
 {
-    ASSERT(node, "node = nullptr, impossible to write tex", stderr);
-    ASSERT(file, "file = nullptr, impossible to write tex", stderr);
+    ASSERT(node, "node = nullptr, impossible to write tex",          stderr);
+    ASSERT(file, "file = nullptr, impossible to write in null file", stderr);
 
     if (count != 0)
     {
-        //fputs(text, file);
         fprintf(file, "\\section{%s}\n", text);
 
         fprintf(file, "\t\\[");

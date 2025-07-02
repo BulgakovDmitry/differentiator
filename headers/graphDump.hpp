@@ -5,6 +5,8 @@
 
 void dumpGraph(Node* root, Node* deriv, Node* rootSimpl, Node* derivSimpl, FILE* html);
 
+const char* const HTML_FILE_NAME = "dumpGraph/htmlDumpFile.html";
+
 const size_t MAX_NAME_FILE_LEN = 32;
 const size_t EXTRA_SPACE       = 15;
 

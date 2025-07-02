@@ -1,0 +1,14 @@
+digraph G {
+    node [style=filled, fontcolor=darkblue, fillcolor=peachpuff, color="#252A34", penwidth=2.5];
+    bgcolor="lemonchiffon";
+
+node_0x604000000a90 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";label=" {OPERATION ( * ) | addr: 604000000A90 | type: 3 | value: 3 | {left: 604000000A50 | right: 6040000009D0}} "];
+    node_0x604000000a50 [shape=Mrecord; style = filled; fillcolor = palegreen; color = "#000000"; fontcolor = "#000000";  label="  {NUMBER ( 2 )| addr: 604000000A50 | type: 1| value: 2 | {left: 0 | right: 0}} "];
+node_0x6040000009d0 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";label=" {OPERATION ( + ) | addr: 6040000009D0 | type: 3 | value: 1 | {left: 604000000990 | right: 604000000950}} "];
+    node_0x604000000990 [shape=Mrecord; style = filled; fillcolor = cornflowerblue; color = "#000000"; fontcolor = "#000000";  label="  {VARIABLE ( x )| addr: 604000000990 | type: 2| value: x | {left: 0 | right: 0}} "];
+    node_0x604000000950 [shape=Mrecord; style = filled; fillcolor = palegreen; color = "#000000"; fontcolor = "#000000";  label="  {NUMBER ( 1 )| addr: 604000000950 | type: 1| value: 1 | {left: 0 | right: 0}} "];
+    node_0x604000000a90 -> node_0x604000000a50;
+    node_0x604000000a90 -> node_0x6040000009d0;
+    node_0x6040000009d0 -> node_0x604000000990;
+    node_0x6040000009d0 -> node_0x604000000950;
+}

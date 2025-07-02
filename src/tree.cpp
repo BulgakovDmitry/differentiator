@@ -12,6 +12,7 @@ Node* newNode(Types type, Value_t value, Node* left, Node* right)
     if (type >= NUMBER_OF_TYPES) 
     {
         fprintf(stderr, RED"ERROR: type >= NUMBER_OF_TYPES\n"RESET);
+        FREE(node); 
         return nullptr;
     }
 
@@ -31,11 +32,7 @@ Node* newNode(Types type, Value_t value, Node* left, Node* right)
 
 void dtorTree(Node* node)
 {
-    if (!node) 
-    {
-        fprintf(stderr, RED "node == nullptr, impossible to do dtor\n" RESET); 
-        return;
-    }
+    ASSERT(node, "node = nullptr, impossible to dtor tree with this root", stderr);
 
     if (node->left)  
     {
@@ -52,11 +49,7 @@ void dtorTree(Node* node)
 
 void deleteNode(Node* node) 
 {
-    if (!node) 
-    {
-        fprintf(stderr, RED "The node is not deleted\n" RESET); 
-        return;
-    }
+    ASSERT(node, "node = nullptr, impossible to delete this node", stderr);
 
     node->type  = (Types)0;
     node->value.num = 0;
@@ -71,7 +64,7 @@ void deleteNode(Node* node)
 
 Node* copy(Node* node)
 {
-    if(!node) return NULL;
+    if(!node) return nullptr;
     Node* n = newNode(node->type, node->value, copy(node->left), copy(node->right));
     return n;
 }

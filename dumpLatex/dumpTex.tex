@@ -1,0 +1,44 @@
+\documentclass[12pt, letterpaper, twoside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{xcolor}
+\usepackage{tikz}
+\definecolor{bgDark}{HTML}{0D1B2A}
+\definecolor{accent}{HTML}{F95738}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{graphicx}
+\usepackage{lmodern}
+\pagecolor{gray!3}
+\pagecolor{bgDark}
+\color{white}
+\usetikzlibrary{calc}
+
+\begin{document}
+\begin{titlepage}
+  \centering
+  \vspace*{0.25\textheight}
+  {\fontsize{48}{60}\bfseries\color{accent}DIFFERENTIATOR\\}
+  \vspace{1.5em}
+  {\Large\itshape Symbolic Derivation Engine}\\
+  \vspace{2em}
+  \quad \today\\
+  \vfill
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[accent] (current page.south west) rectangle ++(\paperwidth,1.5cm);
+    \node[font=\bfseries\LARGE, text=black, align=center]
+      at ([xshift=0.5\paperwidth,yshift=0.75cm]current page.south west)
+      {Project author: Bulgakov Dmitry};
+  \end{tikzpicture}
+\end{titlepage}
+\newpage
+
+\section{The original form of the mathematical expression}
+	\[((0 \cdot x) + ((x + 1))^{2})\]
+\section{The original form can be simplified}
+	\[((x + 1))^{2}\]
+\section{We obtain the derivative}
+	\[((2 \cdot ((x + 1))^{(2 - 1)}) \cdot (1 + 0))\]
+\section{The final form can be simplified}
+	\[(2 \cdot (x + 1))\]
+\end{document}

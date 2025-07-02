@@ -41,9 +41,6 @@ enum Operations
     NUMBER_OF_OPERATION,
 };
 
-const double PI = 3.1415;
-const double E  = 2.7183;
-
 struct Node
 {
     Types type;

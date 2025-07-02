@@ -32,9 +32,9 @@ void dumpGraph(Node* root, Node* deriv, Node* rootSimpl, Node* derivSimpl, FILE*
 
 static void dumpGraphSubTree(Node* node, const char* filePrefix, FILE* html)
 {
-    ASSERT(node, "node = nullptr", stderr);
+    ASSERT(node,       "node = nullptr",       stderr);
     ASSERT(filePrefix, "filePrefix = nullptr", stderr);
-    ASSERT(html, "html = nullptr", stderr);
+    ASSERT(html,       "html = nullptr",       stderr);
 
     char gvPath [MAX_NAME_FILE_LEN] = "";
     char pngPath[MAX_NAME_FILE_LEN] = "";
@@ -53,6 +53,7 @@ static void dumpGraphSubTree(Node* node, const char* filePrefix, FILE* html)
     dumpListNodes(node, gv);
     dumpConnectNodes(node, gv);
     fprintf(gv, "}\n");
+
     FCLOSE(gv);
 
     char cmd[2 * MAX_NAME_FILE_LEN + EXTRA_SPACE] = "";
@@ -207,14 +208,14 @@ static void dumpListNodes(Node* node, FILE* dumpTreeFile)
         }                                                                                      
     }
     
-    if (node->left)  dumpListNodes(node->left, dumpTreeFile);
+    if (node->left)  dumpListNodes(node->left,  dumpTreeFile);
     if (node->right) dumpListNodes(node->right, dumpTreeFile);
 }
 
 static void caseOperation(Node* node, const char* operation, FILE* dumpTreeFile)
 {
-    ASSERT(node, "node = nullptr", stderr);
-    ASSERT(operation, "operation = nullptr", stderr);
+    ASSERT(node,         "node = nullptr",         stderr);
+    ASSERT(operation,    "operation = nullptr",    stderr);
     ASSERT(dumpTreeFile, "dumpTreeFile = nullptr", stderr);
 
     fprintf(dumpTreeFile, 

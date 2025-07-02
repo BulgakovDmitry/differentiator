@@ -3,10 +3,9 @@
 
 #include "tree.hpp"
 
-const char* const DUMPTEX_FILE_NAME = "dumpLatex/dumpTex.tex";
-const char* const TEX_DIR           = "dumpLatex";
-const char* const PDFLATEX_LOG      = "dumpLatex/pdflatex.log";
+const char* const PDFLATEX_LOG  = "dumpLatex/pdflatex.log";
+const char* const TEX_FILE_NAME = "dumpLatex/dumpTex.tex"; 
 
-void dumpTex(Node* root, Node* deriv, Node* rootSimpl, Node* derivSimpl, size_t countRoot, size_t counstDeriv);                
+void dumpTex(Node* root, Node* deriv, Node* rootSimpl, Node* derivSimpl, size_t countRoot, size_t countDeriv, FILE* tex);                
 
 #endif

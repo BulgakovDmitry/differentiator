@@ -1,0 +1,7 @@
+obj
+*.out
+*.txt
+.vscode
+.dist
+
+

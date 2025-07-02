@@ -1,15 +1,16 @@
 #include "../headers/simplify.hpp"
 #include "../headers/tree.hpp"        
+#include <math.h>
 
 static void replaceRightSubtree(Node** root);
-static void replaceLeftSubtree(Node** root);
+static void replaceLeftSubtree (Node** root);
 
 static bool needOptimization(Node* root);
-static bool needConstFolder(Node* node);
+static bool needConstFolder (Node* node);
 
-static Node* constFolding (Node* node);
+static Node* constFolding(Node* node);
 
-static Node* optimization(Node* node);
+static Node* optimization   (Node* node);
 static Node* optimisationAdd(Node* node);
 static Node* optimisationSub(Node* node);
 static Node* optimisationMul(Node* node);
@@ -21,6 +22,9 @@ static Node* optimisationPow(Node* node);
 
 Node* simplify(Node* node, size_t* count)
 {
+    ASSERT(node,  "node = nullptr, impossible to simpl",           stderr);
+    ASSERT(count, "count = nullptr, impossible to count simplify", stderr);
+
     bool flagConstFolding  = true;
     bool flagOptimizations = true;
     
@@ -50,8 +54,8 @@ Node* simplify(Node* node, size_t* count)
 
 static void replaceRightSubtree(Node** root)
 {
-    ASSERT(*root, "root = nullptr", stderr);
-    ASSERT(root, "&root = nullptr", stderr);
+    ASSERT(*root, "root = nullptr",  stderr);
+    ASSERT( root, "&root = nullptr", stderr);
 
     Node* oldRoot = *root;
     Node* newRoot = oldRoot->right;

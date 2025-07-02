@@ -3,19 +3,17 @@
 
 Node* diff(Node* node)
 {
-    if (!node)
-    {
-        fprintf(stderr, RED "ERROR IN FUNCTION diff, diff get the null node\n" RESET);
-        abort();
-    }
+    ASSERT(node, "node = nullptr, impossible to diff", stderr);
+
+    Node* result = nullptr;
 
     if (node->type == TYPE_NUMBER) 
-        return _NUM(0);
+        result = _NUM(0);
 
-    if (node->type == TYPE_VARIABLE) 
-        return _NUM(1);
+    else if (node->type == TYPE_VARIABLE) 
+        result = _NUM(1);
 
-    if (node->type == TYPE_OPERATION) 
+    else if (node->type == TYPE_OPERATION) 
     {
         Node* left  = node->left;
         Node* right = node->right;
@@ -27,35 +25,43 @@ Node* diff(Node* node)
             }*/
             case OPERATION_ADD:
             {
-                return _ADD(diff(left), diff(right));
+                result = _ADD(diff(left), diff(right));
+                break;
             }    
             case OPERATION_SUB:
             {
-                return _SUB(diff(left), diff(right));
+                result = _SUB(diff(left), diff(right));
+                break;
             }
             case OPERATION_MUL:
             {
-                return _ADD(_MUL(diff(left), copy(right)), _MUL(copy(left), diff(right)));
+                result = _ADD(_MUL(diff(left), copy(right)), _MUL(copy(left), diff(right)));
+                break;
             }
             case OPERATION_DIV:
             {
-                return _DIV(_SUB(_MUL(copy(right), diff(left)), _MUL(copy(left), diff(right))),_POW(copy(right), _NUM(2)));
+                result = _DIV(_SUB(_MUL(copy(right), diff(left)), _MUL(copy(left), diff(right))),_POW(copy(right), _NUM(2)));
+                break;
             }
             case OPERATION_SIN:
             {
-                return _MUL(_COS(copy(right)), diff(right));
+                result = _MUL(_COS(copy(right)), diff(right));
+                break;
             }
             case OPERATION_COS:
             {
-                return _MUL(_NEG(_SIN(copy(right))), diff(right));
+                result = _MUL(_NEG(_SIN(copy(right))), diff(right));
+                break;
             }
             case OPERATION_TG:
             {
-                return _MUL(_DIV(_NUM(1), _POW(_COS(copy(right)), _NUM(2))), diff(right));
+                result = _MUL(_DIV(_NUM(1), _POW(_COS(copy(right)), _NUM(2))), diff(right));
+                break;
             }
             case OPERATION_LN:
             {
-                return _DIV(diff(right), copy(right));
+                result = _DIV(diff(right), copy(right));
+                break;
             }
             case OPERATION_LOG:
             {
@@ -67,22 +73,25 @@ Node* diff(Node* node)
                 Node* term1 = _DIV(diff(arg), _MUL(copy(arg), lnBase));
                 Node* term2 = _DIV(_MUL(lnArg, diff(base)), _MUL(_POW(lnBase, _NUM(2)), copy(base)));
 
-                return _SUB(term1, term2);
+                result = _SUB(term1, term2);
+                break;
             }
             case OPERATION_POW:
             {
-                return diffPow(node);
+                result = diffPow(node);
+                break;
             }
             default:
-                printf(RED "SINTAX ERRROR IN FUNCTION DIFF\n" RESET);
+                fprintf(stderr, RED"SINTAX ERRROR IN FUNCTION DIFF\n"RESET);
                 break;
         }
     }   
-    
-    return nullptr; 
+
+    return result; 
 }
 
-Node* diffPow(Node* node) {
+Node* diffPow(Node* node) 
+{
     Node* base = node->left;
     Node* exp  = node->right;
 
@@ -90,14 +99,10 @@ Node* diffPow(Node* node) {
     bool varInExp  = containsVariable(exp);
 
     if (varInBase && !varInExp) 
-    {
         return _MUL(_MUL(copy(exp), _POW(copy(base), _SUB(copy(exp), _NUM(1)))), diff(base));
-    }
 
     if (!varInBase && varInExp) 
-    {
         return _MUL(_MUL(_POW(copy(base), copy(exp)), _LN(copy(base))), diff(exp));
-    }
 
     return _MUL(copy(node), _ADD(_MUL(diff(exp), _LN(copy(base))), _MUL(copy(exp), _DIV(diff(base), copy(base)))));
 }
