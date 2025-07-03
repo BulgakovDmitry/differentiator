@@ -3,25 +3,8 @@
 
 #include "tree.hpp"
 
-struct ReadStruct
-{
-    Node* Root;
-    size_t depth;
-    size_t CurrentNum;
-    bool IsRight;
-};
+const char* const EXPRESSION_FILE = "expression.txt";
 
-const int FILENAMESIZE  = 25;
-const int STEP_P        = 1;
-
-struct GetParam
-{
-    char* arr;
-    int index;
-};
-
-Node* read();
-GetParam* GetCtor();
-void GetDtor(GetParam* gp);
+Node* readExpression(FILE* expressionFile);
 
 #endif

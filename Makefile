@@ -31,8 +31,8 @@ FLAGS		  = -D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ -Waggressive-l
 
 
 #--------------------------------------------------------------------------------------------------
-#$(OBJ)read.o
-DIFF_OBJ = $(OBJ)diff.o $(OBJ)tree.o $(OBJ)simplify.o $(OBJ)graphDump.o $(OBJ)consoleDump.o $(OBJ)myLib.o $(OBJ)main.o
+DUMP = $(OBJ)graphDump.o $(OBJ)consoleDump.o $(OBJ)texDump.o
+DIFF_OBJ = $(OBJ)diff.o $(OBJ)tree.o $(OBJ)simplify.o $(OBJ)read.o $(DUMP) $(OBJ)myLib.o $(OBJ)main.o
 #--------------------------------------------------------------------------------------------------
 
 #--------------------------------------------------------------------------------------------------

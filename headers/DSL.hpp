@@ -40,14 +40,29 @@
 #define _SIN(argument_) \
     newNode(TYPE_OPERATION, OP_VALUE(OPERATION_SIN), NULL, argument_)
     
+#define _COS(argument_) \
+    newNode(TYPE_OPERATION, OP_VALUE(OPERATION_COS), NULL, argument_)
+
 #define _TG(argument_) \
     newNode(TYPE_OPERATION, OP_VALUE(OPERATION_TG), NULL, argument_)
+
+#define _CTG(argument_) \
+    newNode(TYPE_OPERATION, OP_VALUE(OPERATION_CTG), NULL, argument_)
     
 #define _LN(argument_) \
     newNode(TYPE_OPERATION, OP_VALUE(OPERATION_LN), NULL, argument_)
+
+#define _ARCSIN(argument_) \
+    newNode(TYPE_OPERATION, OP_VALUE(OPERATION_ARCSIN), NULL, argument_)
+
+#define _ARCCOS(argument_) \
+    newNode(TYPE_OPERATION, OP_VALUE(OPERATION_ARCCOS), NULL, argument_)
     
-#define _COS(argument_) \
-    newNode(TYPE_OPERATION, OP_VALUE(OPERATION_COS), NULL, argument_)
+#define _ARCTG(argument_) \
+    newNode(TYPE_OPERATION, OP_VALUE(OPERATION_ARCTG), NULL, argument_)
+
+#define _ARCCTG(argument_) \
+    newNode(TYPE_OPERATION, OP_VALUE(OPERATION_ARCCTG), NULL, argument_)
     
 #define _SQRT(argument_) \
     _ROOT(_NUM(2), OP_VALUE(argument_))

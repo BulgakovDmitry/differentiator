@@ -11,6 +11,7 @@
 
 extern const char* const HTML_FILE_NAME; //xdg-open /home/user/Desktop/differentiator/dumpGraph/htmlDumpFile.html
 extern const char* const TEX_FILE_NAME;
+extern const char* const EXPRESSION_FILE;
 
 int main()
 {
@@ -20,11 +21,14 @@ int main()
     FILE* texFile = fopen(TEX_FILE_NAME, "w=");
     ASSERT(texFile, "texFile = nullptr", stderr);
 
-    Node* root = _ADD(_MUL(_NUM(0), _VAR('x')), _POW(_ADD(_VAR('x'), _NUM(1)), _NUM(2)));
+    FILE* expressionFile = fopen(EXPRESSION_FILE, "rb");
+    ASSERT(expressionFile, "expressionFile = nullptr, impossible to read the math expression", stderr);
+
+    //Node* root = _ADD(_MUL(_NUM(0), _VAR('x')), _POW(_ADD(_VAR('x'), _NUM(1)), _NUM(2)));
     //Node* root = _MUL(_NUM(5), _VAR('x'));
     //Node* root = _MUL(_VAR('x'), _LN(_VAR('x')));
     //Node* root = _POW(_VAR('x'), _VAR('x'));
-    //Node* root = read();
+    Node* root = readExpression(expressionFile);
     //Node* root = _ADD(_VAR('x'), _MUL(_NUM(3), _SIN(_VAR('x'))));
 
     size_t countRoot = 0;
@@ -48,7 +52,7 @@ int main()
 
     FCLOSE(htmlFile);
     FCLOSE(texFile);    
-    
+    FCLOSE(expressionFile);
 
     return 0;
 }
