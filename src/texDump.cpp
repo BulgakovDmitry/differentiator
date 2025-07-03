@@ -147,6 +147,20 @@ static void generateTexExpression(Node* node, FILE* file)
                     fprintf(file, ")");
                     break;
                 }
+                case OPERATION_NEG:
+                {
+                    fprintf(file, "-( ");
+                    generateTexExpression(node->right, file);
+                    fprintf(file, ")");
+                    break;
+                }
+                case OPERATION_SQRT:
+                {
+                    fprintf(file, "sqrt( ");
+                    generateTexExpression(node->right, file);
+                    fprintf(file, ")");
+                    break;
+                }
                 case OPERATION_SIN:
                 {
                     fprintf(file, "sin( ");
@@ -164,6 +178,69 @@ static void generateTexExpression(Node* node, FILE* file)
                 case OPERATION_TG:
                 {
                     fprintf(file, "tg( ");
+                    generateTexExpression(node->right, file);
+                    fprintf(file, ")");
+                    break;
+                }
+                case OPERATION_CTG:
+                {
+                    fprintf(file, "ctg( ");
+                    generateTexExpression(node->right, file);
+                    fprintf(file, ")");
+                    break;
+                }
+                case OPERATION_ARCSIN:
+                {
+                    fprintf(file, "arcsin( ");
+                    generateTexExpression(node->right, file);
+                    fprintf(file, ")");
+                    break;
+                }
+                case OPERATION_ARCCOS:
+                {
+                    fprintf(file, "arccos( ");
+                    generateTexExpression(node->right, file);
+                    fprintf(file, ")");
+                    break;
+                }
+                case OPERATION_ARCTG:
+                {
+                    fprintf(file, "arctg( ");
+                    generateTexExpression(node->right, file);
+                    fprintf(file, ")");
+                    break;
+                }
+                case OPERATION_ARCCTG:
+                {
+                    fprintf(file, "arcctg( ");
+                    generateTexExpression(node->right, file);
+                    fprintf(file, ")");
+                    break;
+                }
+                case OPERATION_SH:
+                {
+                    fprintf(file, "sh( ");
+                    generateTexExpression(node->right, file);
+                    fprintf(file, ")");
+                    break;
+                }
+                case OPERATION_CH:
+                {
+                    fprintf(file, "ch( ");
+                    generateTexExpression(node->right, file);
+                    fprintf(file, ")");
+                    break;
+                }
+                case OPERATION_TH:
+                {
+                    fprintf(file, "th( ");
+                    generateTexExpression(node->right, file);
+                    fprintf(file, ")");
+                    break;
+                }
+                case OPERATION_CTH:
+                {
+                    fprintf(file, "cth( ");
                     generateTexExpression(node->right, file);
                     fprintf(file, ")");
                     break;

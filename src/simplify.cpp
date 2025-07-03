@@ -165,17 +165,26 @@ static Node* constFolding (Node* node)
         
         switch (node->value.op)
         {
-            case OPERATION_ADD:  {res = lhs + rhs;        break;}
-            case OPERATION_SUB:  {res = lhs - rhs;        break;}
-            case OPERATION_MUL:  {res = lhs * rhs;        break;}
-            case OPERATION_DIV:  {res = lhs / rhs;        break;}
-            case OPERATION_POW:  {res = pow(lhs, rhs);    break;}
-            
-            case OPERATION_SIN:  {res = sin(rhs);         break;}
-            case OPERATION_COS:  {res = cos(rhs);         break;}
-            case OPERATION_TG:   {res = tan(rhs);         break;}
-            case OPERATION_LN:   {res = log(rhs);         break;}
-            case OPERATION_SQRT: {res = sqrt(rhs);        break;}
+            case OPERATION_ADD:    {res = lhs + rhs;          break;}
+            case OPERATION_SUB:    {res = lhs - rhs;          break;}
+            case OPERATION_MUL:    {res = lhs * rhs;          break;}
+            case OPERATION_DIV:    {res = lhs / rhs;          break;}
+            case OPERATION_POW:    {res = pow(lhs, rhs);      break;}
+            case OPERATION_SIN:    {res = sin  (rhs);         break;}
+            case OPERATION_COS:    {res = cos  (rhs);         break;}
+            case OPERATION_TG:     {res = tan  (rhs);         break;}
+            case OPERATION_CTG:    {res = 1/tan(rhs);         break;}
+            case OPERATION_ARCSIN: {res = asin (rhs);         break;}
+            case OPERATION_ARCCOS: {res = acos (rhs);         break;}
+            case OPERATION_ARCTG:  {res = atan (rhs);         break;}
+            case OPERATION_ARCCTG: {res = 3.1415/2-atan(rhs); break;}
+            case OPERATION_SH:     {res = sinh (rhs);         break;}
+            case OPERATION_CH:     {res = cosh (rhs);         break;}
+            case OPERATION_TH:     {res = tanh (rhs);         break;}
+            case OPERATION_CTH:    {res = 1/tanh(rhs);        break;}
+            case OPERATION_LN:     {res = log  (rhs);         break;}
+            case OPERATION_SQRT:   {res = sqrt (rhs);         break;}
+            case OPERATION_NEG:    {res = -    (rhs);         break;}
             
             default: return node; 
         }

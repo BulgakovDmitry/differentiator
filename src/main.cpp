@@ -24,12 +24,8 @@ int main()
     FILE* expressionFile = fopen(EXPRESSION_FILE, "rb");
     ASSERT(expressionFile, "expressionFile = nullptr, impossible to read the math expression", stderr);
 
-    //Node* root = _ADD(_MUL(_NUM(0), _VAR('x')), _POW(_ADD(_VAR('x'), _NUM(1)), _NUM(2)));
-    //Node* root = _MUL(_NUM(5), _VAR('x'));
-    //Node* root = _MUL(_VAR('x'), _LN(_VAR('x')));
-    //Node* root = _POW(_VAR('x'), _VAR('x'));
     Node* root = readExpression(expressionFile);
-    //Node* root = _ADD(_VAR('x'), _MUL(_NUM(3), _SIN(_VAR('x'))));
+    ASSERT(root, "root = nullptr, could not be read", stderr);
 
     size_t countRoot = 0;
     Node* rootSimpl = simplify(copy(root), &countRoot);
@@ -43,7 +39,7 @@ int main()
     dumpTex(root, deriv, rootSimpl, derivSimpl, countRoot, countDeriv, texFile);
     
     //dumpConsole(root, "root");
-    //dumpConsole(deriv, "deriv");
+    //dumpConsole(derivSimpl, "derivSimpl");
     
     dtorTree(root);
     dtorTree(rootSimpl);

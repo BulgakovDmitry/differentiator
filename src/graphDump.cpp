@@ -165,14 +165,14 @@ static void dumpListNodes(Node* node, FILE* dumpTreeFile)
                 caseOperation(node, "^", dumpTreeFile);
                 break;    
             }
-            case OPERATION_LOG:
+            case OPERATION_NEG:
             {
-                caseOperation(node, "log", dumpTreeFile);
-                break;    
+                caseOperation(node, "-", dumpTreeFile);
+                break;
             }
-            case OPERATION_ROOT:
+            case OPERATION_SQRT:
             {
-                caseOperation(node, "root", dumpTreeFile);
+                caseOperation(node, "sqrt", dumpTreeFile);
                 break;    
             }
             case OPERATION_SIN:
@@ -190,14 +190,54 @@ static void dumpListNodes(Node* node, FILE* dumpTreeFile)
                 caseOperation(node, "tg", dumpTreeFile);
                 break;    
             }
+            case OPERATION_CTG:
+            {
+                caseOperation(node, "ctg", dumpTreeFile);
+                break;  
+            }
+            case OPERATION_ARCSIN:
+            {
+                caseOperation(node, "arcsin", dumpTreeFile);
+                break;  
+            }
+            case OPERATION_ARCCOS:
+            {
+                caseOperation(node, "arccos", dumpTreeFile);
+                break;  
+            }
+            case OPERATION_ARCTG:
+            {
+                caseOperation(node, "arctg", dumpTreeFile);
+                break;  
+            }
+            case OPERATION_ARCCTG:
+            {
+                caseOperation(node, "arctg", dumpTreeFile);
+                break;  
+            }
+            case OPERATION_SH:
+            {
+                caseOperation(node, "sh", dumpTreeFile);
+                break;  
+            }
+            case OPERATION_CH:
+            {
+                caseOperation(node, "ch", dumpTreeFile);
+                break;  
+            }
+            case OPERATION_TH:
+            {
+                caseOperation(node, "th", dumpTreeFile);
+                break;  
+            }
+            case OPERATION_CTH:
+            {
+                caseOperation(node, "cth", dumpTreeFile);
+                break;  
+            }
             case OPERATION_LN:
             {
                 caseOperation(node, "ln", dumpTreeFile);
-                break;    
-            }
-            case OPERATION_SQRT:
-            {
-                caseOperation(node, "sqrt", dumpTreeFile);
                 break;    
             }
             default:

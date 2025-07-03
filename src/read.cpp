@@ -14,7 +14,8 @@
 // ADD_SUB ::= MUL_DIV {['+', '-'] MUL_DIV}*
 // MUL_DIV ::= POW {['*', '/'] POW}*
 // POW     ::= FUNC {['^'] FUNC}*
-// FUNC    ::= ['ln', 'sin', 'cos', 'tg', 'ctg', 'arctg', 'arcctg', 'arcsin', 'arccos'] '(' ADD_SUB ')' | EXPR
+// FUNC    ::= ['ln', 'sqrt', 'sin', 'cos', 'tg', 'ctg', 'arctg', 'arcctg', 'arcsin', 'arccos', 
+//              'neg', 'sh', 'ch', 'th', 'cth'] '(' ADD_SUB ')' | EXPR
 // EXPR    ::= '(' ADD_SUB ')' | ARG
 // ARG     ::= NUM | VAR
 // VAR     ::= ['a'-'z''A'-'Z']*
@@ -22,6 +23,7 @@
 /*-----------------------------------------------------------------------------------------------------*/
 
 static const char* cur = nullptr;
+
 static inline void skipSpaces();
 static Node* makeFunc(const char *name, Node *arg);
  
@@ -40,19 +42,30 @@ static inline void skipSpaces()
     while (*cur && isspace(*cur)) ++cur;
 }
 
-static Node* makeFunc(const char *name, Node *arg)
-{
-    if      (strcmp(name, "ln")     == 0) return _LN   (arg);
-    else if (strcmp(name, "sin")    == 0) return _SIN   (arg);
-    else if (strcmp(name, "cos")    == 0) return _COS   (arg);
-    else if (strcmp(name, "tg")     == 0) return _TG    (arg);
-    else if (strcmp(name, "ctg")    == 0) return _CTG   (arg);
-    else if (strcmp(name, "arctg")  == 0) return _ARCTG (arg);
-    else if (strcmp(name, "arcctg") == 0) return _ARCCTG(arg);
-    else if (strcmp(name, "arcsin") == 0) return _ARCSIN(arg);
-    else if (strcmp(name, "arccos") == 0) return _ARCCOS(arg);
+#define FUNC_LIST      \
+    X(ln,     _LN)     \
+    X(neg,    _NEG)    \
+    X(sqrt,   _SQRT)   \
+    X(sin,    _SIN)    \
+    X(cos,    _COS)    \
+    X(tg,     _TG)     \
+    X(ctg,    _CTG)    \
+    X(arctg,  _ARCTG)  \
+    X(arcctg, _ARCCTG) \
+    X(arcsin, _ARCSIN) \
+    X(arccos, _ARCCOS) \
+    X(sh,     _SH)     \
+    X(ch,     _CH)     \
+    X(th,     _TH)     \
+    X(cth,    _CTH)
 
-    fprintf(stderr, "parseTRIG(): unknown function '%s'\n", name);
+static Node *makeFunc(const char *name, Node *arg)
+{
+#define X(str, fn) if (strcmp(name, #str) == 0) return fn(arg);
+    FUNC_LIST                
+#undef X
+
+    fprintf(stderr, RED"unknown function\n"RESET);
     return NULL;
 }
 
@@ -220,8 +233,11 @@ static Node* parseExpr()
 //------------------------------------------------------------------------------
 static Node* parseArg() 
 {
-    skipSpaces();
-    return parceNum();
+    if      (isdigit(*cur)) {return parceNum();}
+    else if (isalpha(*cur)) {return parceVar();}
+
+    fprintf(stderr, RED"Syntax error: expected number or variable at '%s'\n"RESET, cur);
+    return nullptr;
 }
 
 //------------------------------------------------------------------------------
@@ -229,15 +245,9 @@ static Node* parseArg()
 //------------------------------------------------------------------------------
 static Node* parceVar()
 {
-    if (isalpha(*cur)) 
-    {
-        char var = *cur;
-        while (isalpha(*cur)) ++cur;
-        return _VAR(var);
-    }
-
-    fprintf(stderr, RED"Syntax error: expected number or variable at '%s'\n"RESET, cur);
-    return nullptr;
+    char var = *cur;
+    while (isalpha(*cur)) ++cur;
+    return _VAR(var);
 }
 
 //------------------------------------------------------------------------------
@@ -245,16 +255,13 @@ static Node* parceVar()
 //------------------------------------------------------------------------------
 static Node* parceNum()
 {
-    if (isdigit(*cur)) 
+    double value = 0;
+    while (isdigit(*cur)) 
     {
-        double value = 0;
-        while (isdigit(*cur)) 
-        {
-            value = value * 10 + (*cur - '0');
-            ++cur;
-        }
-        return _NUM(value);
+        value = value * 10 + (*cur - '0');
+        ++cur;
     }
-    return parceVar();
+    return _NUM(value);
 }
 
+#undef FUNC_LIST

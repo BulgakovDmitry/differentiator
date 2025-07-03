@@ -19,10 +19,6 @@ Node* diff(Node* node)
         Node* right = node->right;
         switch (node->value.op)
         {
-            /*case OPERATION_NEG:
-            {
-                return _NEG(diff(node->right)); //TODO add unarny operations
-            }*/
             case OPERATION_ADD:
             {
                 result = _ADD(diff(left), diff(right));
@@ -43,6 +39,11 @@ Node* diff(Node* node)
                 result = _DIV(_SUB(_MUL(copy(right), diff(left)), _MUL(copy(left), diff(right))),_POW(copy(right), _NUM(2)));
                 break;
             }
+            case OPERATION_NEG:
+            {
+                result = _NEG(diff(right));
+                break;
+            }
             case OPERATION_SIN:
             {
                 result = _MUL(_COS(copy(right)), diff(right));
@@ -58,27 +59,64 @@ Node* diff(Node* node)
                 result = _MUL(_DIV(_NUM(1), _POW(_COS(copy(right)), _NUM(2))), diff(right));
                 break;
             }
+            case OPERATION_CTG:
+            {
+                result = _NEG(_MUL(_DIV(_NUM(1), _POW(_SIN(copy(right)), _NUM(2))), diff(right)));
+                break;
+            }
             case OPERATION_LN:
             {
                 result = _DIV(diff(right), copy(right));
                 break;
             }
-            case OPERATION_LOG:
-            {
-                Node* base = left;
-                Node* arg  = right;
-                Node* lnBase = _LN(copy(base));
-                Node* lnArg  = _LN(copy(arg));
-
-                Node* term1 = _DIV(diff(arg), _MUL(copy(arg), lnBase));
-                Node* term2 = _DIV(_MUL(lnArg, diff(base)), _MUL(_POW(lnBase, _NUM(2)), copy(base)));
-
-                result = _SUB(term1, term2);
-                break;
-            }
             case OPERATION_POW:
             {
                 result = diffPow(node);
+                break;
+            }
+            case OPERATION_SQRT:
+            {
+                result = _MUL(_DIV(_NUM(1), _MUL(_NUM(2), _POW(copy(right), _NUM(0.5)))), diff(right));
+                break;
+            }
+            case OPERATION_ARCSIN:
+            {
+                result = _MUL(_DIV(_NUM(1), _SQRT(_SUB(_NUM(1), _POW(copy(right), _NUM(2))))), diff(right));
+                break;
+            }
+            case OPERATION_ARCCOS:
+            {
+                result = _MUL(_NEG(_DIV(_NUM(1), _SQRT(_SUB(_NUM(1), _POW(copy(right), _NUM(2)))))), diff(right));
+                break;
+            }
+            case OPERATION_ARCTG:
+            {
+                result = _MUL(_DIV(_NUM(1), _ADD(_NUM(1), _POW(copy(right), _NUM(2)))), diff(right));
+                break;
+            }
+            case OPERATION_SH:
+            {
+                result = _MUL(_CH(copy(right)), diff(right));
+                break;
+            }
+            case OPERATION_CH:
+            {
+                result = _MUL(_SH(copy(right)), diff(right));
+                break;
+            }
+            case OPERATION_TH:
+            {
+                result = _MUL(_DIV(_NUM(1), _POW(_CH(copy(right)), _NUM(2))), diff(right));
+                break;
+            }
+            case OPERATION_CTH:
+            {
+                result = _MUL(_NEG(_DIV(_NUM(1), _POW(_SH(copy(right)), _NUM(2)))), diff(right));
+                break;
+            }
+            case OPERATION_ARCCTG:
+            {
+                result = _MUL(_NEG(_DIV(_NUM(1), _ADD(_NUM(1), _POW(copy(right), _NUM(2))))), diff(right));
                 break;
             }
             default:

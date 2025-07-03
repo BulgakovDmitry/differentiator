@@ -52,14 +52,14 @@ static void print(Node* node)
                 casePrintOperation("^");
                 break;
             }
-            case OPERATION_LOG:
+            case OPERATION_NEG:
             {
-                casePrintOperation("log");
+                casePrintOperation("-");
                 break;
             }
-            case OPERATION_ROOT:
+            case OPERATION_SQRT:
             {
-                casePrintOperation("root");
+                casePrintOperation("sqrt");
                 break;
             }
             case OPERATION_SIN:
@@ -77,14 +77,54 @@ static void print(Node* node)
                 casePrintOperation("tg");
                 break;
             }
+            case OPERATION_CTG:
+            {
+                casePrintOperation("ctg");
+                break;
+            }
+            case OPERATION_ARCSIN:
+            {
+                casePrintOperation("arcsin");
+                break;
+            }
+            case OPERATION_ARCCOS:
+            {
+                casePrintOperation("arccos");
+                break;
+            }
+            case OPERATION_ARCTG:
+            {
+                casePrintOperation("arctg");
+                break;
+            }
+            case OPERATION_ARCCTG:
+            {
+                casePrintOperation("arcctg");
+                break;
+            }
+            case OPERATION_SH:
+            {
+                casePrintOperation("sh");
+                break;
+            }
+            case OPERATION_CH:
+            {
+                casePrintOperation("ch");
+                break;
+            }
+            case OPERATION_TH:
+            {
+                casePrintOperation("th");
+                break;
+            }
+            case OPERATION_CTH:
+            {
+                casePrintOperation("cth");
+                break;
+            }
             case OPERATION_LN:
             {
                 casePrintOperation("ln");
-                break;
-            }
-            case OPERATION_SQRT:
-            {
-                casePrintOperation("sqrt");
                 break;
             }
             default:

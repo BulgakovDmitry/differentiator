@@ -31,12 +31,6 @@
 #define _POW(firstNumber_, secondNumber_) \
     newNode(TYPE_OPERATION, OP_VALUE(OPERATION_POW), firstNumber_, secondNumber_) 
     
-#define _ROOT(firstNumber_, secondNumber_) \
-    newNode(TYPE_OPERATION, OP_VALUE(OPERATION_ROOT), firstNumber_, secondNumber_) 
-    
-#define _LOG(firstNumber_, secondNumber_) \
-    newNode(TYPE_OPERATION, OP_VALUE(OPERATION_LOG), firstNumber_, secondNumber_)
-    
 #define _SIN(argument_) \
     newNode(TYPE_OPERATION, OP_VALUE(OPERATION_SIN), NULL, argument_)
     
@@ -63,10 +57,22 @@
 
 #define _ARCCTG(argument_) \
     newNode(TYPE_OPERATION, OP_VALUE(OPERATION_ARCCTG), NULL, argument_)
+
+#define _SH(argument_) \
+    newNode(TYPE_OPERATION, OP_VALUE(OPERATION_SH), NULL, argument_)
+
+#define _CH(argument_) \
+    newNode(TYPE_OPERATION, OP_VALUE(OPERATION_CH), NULL, argument_)
+
+#define _TH(argument_) \
+    newNode(TYPE_OPERATION, OP_VALUE(OPERATION_TH), NULL, argument_)
+
+#define _CTH(argument_) \
+    newNode(TYPE_OPERATION, OP_VALUE(OPERATION_CTH), NULL, argument_)
     
 #define _SQRT(argument_) \
-    _ROOT(_NUM(2), OP_VALUE(argument_))
-    
+    newNode(TYPE_OPERATION, OP_VALUE(OPERATION_SQRT), NULL, argument_)
+
 #define _NEG(argument_) \
     newNode(TYPE_OPERATION, OP_VALUE(OPERATION_NEG), NULL, argument_)
 
