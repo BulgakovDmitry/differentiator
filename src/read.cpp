@@ -25,7 +25,7 @@
 static const char* cur = nullptr;
 
 static inline void skipSpaces();
-static Node* makeFunc(const char *name, Node *arg);
+static Node* makeFunc(const char* name, Node* arg);
  
 static Node* parseGrammar(); // rule - GRAMMAR
 static Node* parseAddSub (); // rule - ADD_SUB
@@ -59,7 +59,7 @@ static inline void skipSpaces()
     X(th,     _TH)     \
     X(cth,    _CTH)
 
-static Node *makeFunc(const char *name, Node *arg)
+static Node* makeFunc(const char* name, Node* arg)
 {
 #define X(str, fn) if (strcmp(name, #str) == 0) return fn(arg);
     FUNC_LIST                
@@ -68,6 +68,8 @@ static Node *makeFunc(const char *name, Node *arg)
     fprintf(stderr, RED"unknown function\n"RESET);
     return NULL;
 }
+
+#undef FUNC_LIST
 
 Node* readExpression(FILE* expressionFile)
 {

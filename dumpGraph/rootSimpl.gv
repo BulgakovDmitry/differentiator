@@ -2,19 +2,7 @@ digraph G {
     node [style=filled, fontcolor=darkblue, fillcolor=peachpuff, color="#252A34", penwidth=2.5];
     bgcolor="lemonchiffon";
 
-node_0x6040000003d0 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";label=" {OPERATION ( + ) | addr: 6040000003D0 | type: 3 | value: 1 | {left: 604000000390 | right: 6040000002D0}} "];
-node_0x604000000390 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";label=" {OPERATION ( * ) | addr: 604000000390 | type: 3 | value: 3 | {left: 604000000350 | right: 604000000310}} "];
-    node_0x604000000350 [shape=Mrecord; style = filled; fillcolor = palegreen; color = "#000000"; fontcolor = "#000000";  label="  {NUMBER ( 5 )| addr: 604000000350 | type: 1| value: 5 | {left: 0 | right: 0}} "];
-    node_0x604000000310 [shape=Mrecord; style = filled; fillcolor = cornflowerblue; color = "#000000"; fontcolor = "#000000";  label="  {VARIABLE ( x )| addr: 604000000310 | type: 2| value: x | {left: 0 | right: 0}} "];
-node_0x6040000002d0 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";label=" {OPERATION ( * ) | addr: 6040000002D0 | type: 3 | value: 3 | {left: 604000000290 | right: 604000000250}} "];
-    node_0x604000000290 [shape=Mrecord; style = filled; fillcolor = cornflowerblue; color = "#000000"; fontcolor = "#000000";  label="  {VARIABLE ( x )| addr: 604000000290 | type: 2| value: x | {left: 0 | right: 0}} "];
-node_0x604000000250 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";label=" {OPERATION ( ln ) | addr: 604000000250 | type: 3 | value: 8 | {left: 0 | right: 604000000210}} "];
-    node_0x604000000210 [shape=Mrecord; style = filled; fillcolor = cornflowerblue; color = "#000000"; fontcolor = "#000000";  label="  {VARIABLE ( x )| addr: 604000000210 | type: 2| value: x | {left: 0 | right: 0}} "];
-    node_0x6040000003d0 -> node_0x604000000390;
-    node_0x604000000390 -> node_0x604000000350;
-    node_0x604000000390 -> node_0x604000000310;
-    node_0x6040000003d0 -> node_0x6040000002d0;
-    node_0x6040000002d0 -> node_0x604000000290;
-    node_0x6040000002d0 -> node_0x604000000250;
-    node_0x604000000250 -> node_0x604000000210;
+node_0x6040000000d0 [shape=Mrecord; style = filled; fillcolor=plum; color = "#000000"; fontcolor = "#000000";label=" {OPERATION ( sqrt ) | addr: 6040000000D0 | type: 3 | value: 15 | {left: 0 | right: 604000000090}} "];
+    node_0x604000000090 [shape=Mrecord; style = filled; fillcolor = cornflowerblue; color = "#000000"; fontcolor = "#000000";  label="  {VARIABLE ( x )| addr: 604000000090 | type: 2| value: x | {left: 0 | right: 0}} "];
+    node_0x6040000000d0 -> node_0x604000000090;
 }

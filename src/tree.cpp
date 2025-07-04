@@ -3,11 +3,7 @@
 Node* newNode(Types type, Value_t value, Node* left, Node* right)
 {
     Node* node = (Node*)calloc(1, sizeof(Node));
-    if (!node)
-    {
-        fprintf(stderr, RED"ERROR: Calloc returned nullptr in newNode()\n"RESET);
-        return nullptr;
-    }
+    ASSERT(node, "node = nullptr, calloc error", stderr);
 
     if (type >= NUMBER_OF_TYPES) 
     {

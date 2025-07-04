@@ -111,6 +111,8 @@ static void dumpConnectNodes(Node* node, FILE* dumpTreeFile)
     }
 }
 
+#define DUMP_OP(op, str)  case op: caseOperation(node, str, dumpTreeFile); break
+
 static void dumpListNodes(Node* node, FILE* dumpTreeFile)
 {
     ASSERT(node, "node = nullptr", stderr);
@@ -140,106 +142,31 @@ static void dumpListNodes(Node* node, FILE* dumpTreeFile)
     {
         switch (node->value.op)
         {
-            case OPERATION_ADD:
-            {
-                caseOperation(node, "+", dumpTreeFile);
-                break;     
-            }
-            case OPERATION_SUB:
-            {
-                caseOperation(node, "-", dumpTreeFile);
-                break;                   
-            }
-            case OPERATION_MUL:
-            {
-                caseOperation(node, "*", dumpTreeFile);
-                break;                          
-            }
-            case OPERATION_DIV:
-            {
-                caseOperation(node, "/", dumpTreeFile);
-                break;    
-            }
-            case OPERATION_POW:
-            {
-                caseOperation(node, "^", dumpTreeFile);
-                break;    
-            }
-            case OPERATION_NEG:
-            {
-                caseOperation(node, "-", dumpTreeFile);
-                break;
-            }
-            case OPERATION_SQRT:
-            {
-                caseOperation(node, "sqrt", dumpTreeFile);
-                break;    
-            }
-            case OPERATION_SIN:
-            {
-                caseOperation(node, "sin", dumpTreeFile);
-                break;    
-            }
-            case OPERATION_COS:
-            {
-                caseOperation(node, "cos", dumpTreeFile);
-                break;    
-            }
-            case OPERATION_TG:
-            {
-                caseOperation(node, "tg", dumpTreeFile);
-                break;    
-            }
-            case OPERATION_CTG:
-            {
-                caseOperation(node, "ctg", dumpTreeFile);
-                break;  
-            }
-            case OPERATION_ARCSIN:
-            {
-                caseOperation(node, "arcsin", dumpTreeFile);
-                break;  
-            }
-            case OPERATION_ARCCOS:
-            {
-                caseOperation(node, "arccos", dumpTreeFile);
-                break;  
-            }
-            case OPERATION_ARCTG:
-            {
-                caseOperation(node, "arctg", dumpTreeFile);
-                break;  
-            }
-            case OPERATION_ARCCTG:
-            {
-                caseOperation(node, "arctg", dumpTreeFile);
-                break;  
-            }
-            case OPERATION_SH:
-            {
-                caseOperation(node, "sh", dumpTreeFile);
-                break;  
-            }
-            case OPERATION_CH:
-            {
-                caseOperation(node, "ch", dumpTreeFile);
-                break;  
-            }
-            case OPERATION_TH:
-            {
-                caseOperation(node, "th", dumpTreeFile);
-                break;  
-            }
-            case OPERATION_CTH:
-            {
-                caseOperation(node, "cth", dumpTreeFile);
-                break;  
-            }
-            case OPERATION_LN:
-            {
-                caseOperation(node, "ln", dumpTreeFile);
-                break;    
-            }
+            DUMP_OP(OPERATION_ADD,   "+");
+            DUMP_OP(OPERATION_SUB,   "-");
+            DUMP_OP(OPERATION_MUL,   "*");
+            DUMP_OP(OPERATION_DIV,   "/");
+            DUMP_OP(OPERATION_POW,   "^");
+            DUMP_OP(OPERATION_NEG,   "-");
+
+            DUMP_OP(OPERATION_SQRT,  "sqrt");
+            DUMP_OP(OPERATION_LN,    "ln");
+
+            DUMP_OP(OPERATION_SIN,   "sin");
+            DUMP_OP(OPERATION_COS,   "cos");
+            DUMP_OP(OPERATION_TG,    "tg");
+            DUMP_OP(OPERATION_CTG,   "ctg");
+
+            DUMP_OP(OPERATION_ARCSIN,"arcsin");
+            DUMP_OP(OPERATION_ARCCOS,"arccos");
+            DUMP_OP(OPERATION_ARCTG, "arctg");
+            DUMP_OP(OPERATION_ARCCTG,"arcctg");
+
+            DUMP_OP(OPERATION_SH,    "sh");
+            DUMP_OP(OPERATION_CH,    "ch");
+            DUMP_OP(OPERATION_TH,    "th");
+            DUMP_OP(OPERATION_CTH,   "cth");
+
             default:
             {
                 printf(RED "ERROR IN DUMP \n" RESET);
@@ -251,6 +178,8 @@ static void dumpListNodes(Node* node, FILE* dumpTreeFile)
     if (node->left)  dumpListNodes(node->left,  dumpTreeFile);
     if (node->right) dumpListNodes(node->right, dumpTreeFile);
 }
+
+#undef DUMP_OP
 
 static void caseOperation(Node* node, const char* operation, FILE* dumpTreeFile)
 {

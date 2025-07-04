@@ -57,7 +57,7 @@ struct Node
 Node* newNode(Types type, Value_t value, Node* left, Node* right);
 Node* copy(Node* node);
 
-void dtorTree(Node* node);    
+void dtorTree  (Node* node);    
 void deleteNode(Node* node);  
 
 #endif

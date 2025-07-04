@@ -38,8 +38,8 @@ int main()
     dumpGraph(root, deriv, rootSimpl, derivSimpl, htmlFile);
     dumpTex(root, deriv, rootSimpl, derivSimpl, countRoot, countDeriv, texFile);
     
-    //dumpConsole(root, "root");
-    //dumpConsole(derivSimpl, "derivSimpl");
+    dumpConsole(root, "root");
+    dumpConsole(derivSimpl, "derivSimpl");
     
     dtorTree(root);
     dtorTree(rootSimpl);

@@ -17,9 +17,6 @@ static Node* optimisationMul(Node* node);
 static Node* optimisationDiv(Node* node);
 static Node* optimisationPow(Node* node);
 
-#define IS_NUM_ON_DIRECTION(direction, x) \
-    ((node->direction) && (node->direction)->type == TYPE_NUMBER && doubleCmp((node->direction)->value.num, x))
-
 Node* simplify(Node* node, size_t* count)
 {
     ASSERT(node,  "node = nullptr, impossible to simpl",           stderr);
@@ -150,7 +147,7 @@ static bool needConstFolder(Node* node)
     return needConstFolder(node->left) || needConstFolder(node->right);
 }
 
-static Node* constFolding (Node* node)
+static Node* constFolding(Node* node)
 {
     if (!node) return nullptr;
 
@@ -253,7 +250,10 @@ static Node* optimization(Node* node)
         
     return node;
 }
-    
+
+#define IS_NUM_ON_DIRECTION(direction, x) \
+    ((node->direction) && (node->direction)->type == TYPE_NUMBER && doubleCmp((node->direction)->value.num, x))
+
 static Node* optimisationAdd(Node* node)
 {
     ASSERT(node, "node = nullptr, impossible to do optimisationAdd", stderr);
@@ -263,7 +263,8 @@ static Node* optimisationAdd(Node* node)
     
     return node;
 }
-    
+
+
 static Node* optimisationSub(Node* node)
 {
     ASSERT(node, "node = nullptr, impossible to do optimisationSUB", stderr);
@@ -312,6 +313,8 @@ static Node* optimisationPow(Node* node)
     
     return node;
 }
+
+#undef IS_NUM_ON_DIRECTION
 
 bool containsVariable(Node* node) 
 {

@@ -13,6 +13,8 @@ void dumpConsole(Node* node, const char* prefix)
     putchar('\n');
 }
 
+#define PRINT_OP(op, str)  case op: casePrintOperation(str); break
+
 static void print(Node* node)
 {
     ASSERT(node, "node = nullptr, impossible write null text on graph", stderr);
@@ -27,106 +29,31 @@ static void print(Node* node)
     {  
         switch (node->value.op)
         {
-            case OPERATION_ADD:
-            {
-                casePrintOperation("+");
-                break;
-            }
-            case OPERATION_SUB:
-            {
-                casePrintOperation("-");
-                break;
-            }
-            case OPERATION_MUL:
-            {
-                casePrintOperation("*");
-                break;
-            }
-            case OPERATION_DIV:
-            {
-                casePrintOperation("/");
-                break;
-            }
-            case OPERATION_POW:
-            {
-                casePrintOperation("^");
-                break;
-            }
-            case OPERATION_NEG:
-            {
-                casePrintOperation("-");
-                break;
-            }
-            case OPERATION_SQRT:
-            {
-                casePrintOperation("sqrt");
-                break;
-            }
-            case OPERATION_SIN:
-            {
-                casePrintOperation("sin");
-                break;
-            }
-            case OPERATION_COS:
-            {
-                casePrintOperation("cos");
-                break;
-            }
-            case OPERATION_TG:
-            {
-                casePrintOperation("tg");
-                break;
-            }
-            case OPERATION_CTG:
-            {
-                casePrintOperation("ctg");
-                break;
-            }
-            case OPERATION_ARCSIN:
-            {
-                casePrintOperation("arcsin");
-                break;
-            }
-            case OPERATION_ARCCOS:
-            {
-                casePrintOperation("arccos");
-                break;
-            }
-            case OPERATION_ARCTG:
-            {
-                casePrintOperation("arctg");
-                break;
-            }
-            case OPERATION_ARCCTG:
-            {
-                casePrintOperation("arcctg");
-                break;
-            }
-            case OPERATION_SH:
-            {
-                casePrintOperation("sh");
-                break;
-            }
-            case OPERATION_CH:
-            {
-                casePrintOperation("ch");
-                break;
-            }
-            case OPERATION_TH:
-            {
-                casePrintOperation("th");
-                break;
-            }
-            case OPERATION_CTH:
-            {
-                casePrintOperation("cth");
-                break;
-            }
-            case OPERATION_LN:
-            {
-                casePrintOperation("ln");
-                break;
-            }
+            PRINT_OP(OPERATION_ADD,   "+");
+            PRINT_OP(OPERATION_SUB,   "-");
+            PRINT_OP(OPERATION_MUL,   "*");
+            PRINT_OP(OPERATION_DIV,   "/");
+            PRINT_OP(OPERATION_POW,   "^");
+            PRINT_OP(OPERATION_NEG,   "-");
+
+            PRINT_OP(OPERATION_SQRT,  "sqrt");
+            PRINT_OP(OPERATION_LN,    "ln");
+
+            PRINT_OP(OPERATION_SIN,   "sin");
+            PRINT_OP(OPERATION_COS,   "cos");
+            PRINT_OP(OPERATION_TG,    "tg");
+            PRINT_OP(OPERATION_CTG,   "ctg");
+
+            PRINT_OP(OPERATION_ARCSIN,"arcsin");
+            PRINT_OP(OPERATION_ARCCOS,"arccos");
+            PRINT_OP(OPERATION_ARCTG, "arctg");
+            PRINT_OP(OPERATION_ARCCTG,"arcctg");
+
+            PRINT_OP(OPERATION_SH,    "sh");
+            PRINT_OP(OPERATION_CH,    "ch");
+            PRINT_OP(OPERATION_TH,    "th");
+            PRINT_OP(OPERATION_CTH,   "cth");
+
             default:
             {
                 fprintf(stderr, RED"problem with function print\n"RESET);
@@ -148,6 +75,8 @@ static void print(Node* node)
     
     printf(BLUE" )"RESET);
 }
+
+#undef PRINT_OP
 
 static void casePrintOperation(const char* operation)
 {

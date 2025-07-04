@@ -76,7 +76,7 @@ Node* diff(Node* node)
             }
             case OPERATION_SQRT:
             {
-                result = _MUL(_DIV(_NUM(1), _MUL(_NUM(2), _POW(copy(right), _NUM(0.5)))), diff(right));
+                result = _MUL(_DIV(_NUM(1), _MUL(_NUM(2), _SQRT(copy(right)))), diff(right));
                 break;
             }
             case OPERATION_ARCSIN:
