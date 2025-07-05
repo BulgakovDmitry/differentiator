@@ -51,7 +51,7 @@ In the general case, visually it looks as follows (fragment from the graphical d
   <img src="docs/diffGraphDump.png" alt="Graph Dump Banner" width="400">
 </div>
 
-## Expression Grammar
+## ⚙️ Expression Grammar
 The mathematical expression is read from the expression.txt file using the recursive descent algorithm. 
 The reading algorithm is implemented by the following grammar:
 ```bash
