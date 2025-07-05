@@ -55,18 +55,16 @@ In the general case, visually it looks as follows (fragment from the graphical d
 The mathematical expression is read from the expression.txt file using the recursive descent algorithm. 
 The reading algorithm is implemented by the following grammar:
 ```bash
-/*------------------------------------[_____GRAMMAR_____]------------------------------------*/
-// GRAMMAR ::= ADD_SUB '$'
-// ADD_SUB ::= MUL_DIV {['+', '-'] MUL_DIV}*
-// MUL_DIV ::= POW {['*', '/'] POW}*
-// POW     ::= FUNC {['^'] FUNC}*
-// FUNC    ::= ['ln', 'sqrt', 'sin', 'cos', 'tg', 'ctg', 'arctg', 'arcctg', 'arcsin', 'arccos', 
-//              'neg', 'sh', 'ch', 'th', 'cth'] '(' ADD_SUB ')' | EXPR
-// EXPR    ::= '(' ADD_SUB ')' | ARG
-// ARG     ::= NUM | VAR
-// VAR     ::= ['a'-'z''A'-'Z']*
-// NUM     ::= ['0'-'9']+
-/*-------------------------------------------------------------------------------------------*/
+GRAMMAR ::= ADD_SUB '$'
+ADD_SUB ::= MUL_DIV {['+', '-'] MUL_DIV}*
+MUL_DIV ::= POW {['*', '/'] POW}*
+POW     ::= FUNC {['^'] FUNC}*
+FUNC    ::= ['ln', 'sqrt', 'sin', 'cos', 'tg', 'ctg', 'arctg', 'arcctg', 'arcsin', 'arccos', 
+             'neg', 'sh', 'ch', 'th', 'cth'] '(' ADD_SUB ')' | EXPR
+EXPR    ::= '(' ADD_SUB ')' | ARG
+ARG     ::= NUM | VAR
+VAR     ::= ['a'-'z''A'-'Z']*
+NUM     ::= ['0'-'9']+
 ```
 
 ## ✨ Example:
